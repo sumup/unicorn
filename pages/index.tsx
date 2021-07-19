@@ -4,33 +4,35 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
   AuthAction,
+  AuthUserContext,
 } from "next-firebase-auth";
 import Header from "../components/Header";
 import DemoPageLinks from "../components/DemoPageLinks";
 import getAbsoluteURL from "../utils/getAbsoluteURL";
 
-const styles = {
-  content: {
-    padding: 32,
-  },
-  infoTextContainer: {
-    marginBottom: 32,
-  },
+const addDBRecord = async (AuthUser: AuthUserContext) => {
+  const token = await AuthUser.getIdToken();
+  const response = await fetch("/api/createRecord", {
+    method: "POST",
+    headers: {
+      Authorization: token || "unauthenticated",
+    },
+  });
+  const data = await response.json();
+  console.log(data);
 };
 
-const Demo = ({ favoriteColor }) => {
+const Index = () => {
   const AuthUser = useAuthUser();
   return (
     <div>
       <Header email={AuthUser.email} signOut={AuthUser.signOut} />
-      <div style={styles.content}>
-        <div style={styles.infoTextContainer}>
-          <h3>Example: SSR + data fetching with ID token</h3>
-          <p>
-            This page requires authentication. It will do a server-side redirect
-            (307) to the login page if the auth cookies are not set.
-          </p>
-          <p>Your favorite color is: {favoriteColor}</p>
+      <div style={{ padding: 32 }}>
+        <div style={{ marginBottom: 32 }}>
+          <h1>Hi {AuthUser.displayName}, you&apos;re logged in!</h1>
+          <button onClick={() => addDBRecord(AuthUser)}>
+            Update timestamp in DB
+          </button>
         </div>
         <DemoPageLinks />
       </div>
@@ -41,7 +43,6 @@ const Demo = ({ favoriteColor }) => {
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async ({ AuthUser, req }) => {
-  // Optionally, get other props.
   const token = await AuthUser.getIdToken();
   const endpoint = getAbsoluteURL("/api/example", req);
   const response = await fetch(endpoint, {
@@ -67,4 +68,4 @@ export const getServerSideProps = withAuthUserTokenSSR({
 
 export default withAuthUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Demo);
+})(Index);
