@@ -5,6 +5,7 @@ import {
   withAuthUserTokenSSR,
 } from "next-firebase-auth";
 import Header from "../components/Header";
+import { RecommendForm } from "../src/pages/recommend/RecommendForm";
 
 const Recommend = () => {
   const AuthUser = useAuthUser();
@@ -14,6 +15,7 @@ const Recommend = () => {
     <div>
       <Header email={AuthUser.email} signOut={AuthUser.signOut} />
       <span>{message}</span>
+      <RecommendForm />
     </div>
   );
 };
