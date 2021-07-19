@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import {
   useAuthUser,
   withAuthUser,
   withAuthUserTokenSSR,
   AuthAction,
-} from 'next-firebase-auth'
-import Header from '../components/Header'
-import DemoPageLinks from '../components/DemoPageLinks'
-import getAbsoluteURL from '../utils/getAbsoluteURL'
+} from "next-firebase-auth";
+import Header from "../components/Header";
+import DemoPageLinks from "../components/DemoPageLinks";
+import getAbsoluteURL from "../utils/getAbsoluteURL";
 
 const styles = {
   content: {
@@ -16,10 +16,10 @@ const styles = {
   infoTextContainer: {
     marginBottom: 32,
   },
-}
+};
 
 const Demo = ({ favoriteColor }) => {
-  const AuthUser = useAuthUser()
+  const AuthUser = useAuthUser();
   return (
     <div>
       <Header email={AuthUser.email} signOut={AuthUser.signOut} />
@@ -35,36 +35,36 @@ const Demo = ({ favoriteColor }) => {
         <DemoPageLinks />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async ({ AuthUser, req }) => {
   // Optionally, get other props.
-  const token = await AuthUser.getIdToken()
-  const endpoint = getAbsoluteURL('/api/example', req)
+  const token = await AuthUser.getIdToken();
+  const endpoint = getAbsoluteURL("/api/example", req);
   const response = await fetch(endpoint, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Authorization: token || 'unauthenticated',
+      Authorization: token || "unauthenticated",
     },
-  })
-  const data = await response.json()
+  });
+  const data = await response.json();
   if (!response.ok) {
     throw new Error(
       `Data fetching failed with status ${response.status}: ${JSON.stringify(
         data
       )}`
-    )
+    );
   }
   return {
     props: {
       favoriteColor: data.favoriteColor,
     },
-  }
-})
+  };
+});
 
 export default withAuthUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Demo)
+})(Demo);

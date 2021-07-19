@@ -1,18 +1,18 @@
-import React from 'react'
-import Link from 'next/link'
+import React from "react";
+import Link from "next/link";
 
 const styles = {
   content: {
-    padding: '4px 32px 32px 32px',
-    background: '#eeeeee',
-    display: 'inline-block',
+    padding: "4px 32px 32px 32px",
+    background: "#eeeeee",
+    display: "inline-block",
   },
   linkAnchor: {
-    color: 'teal',
-    display: 'block',
-    lineHeight: '160%',
+    color: "teal",
+    display: "block",
+    lineHeight: "160%",
   },
-}
+};
 
 const DemoPageLinks = () => (
   <div style={styles.content}>
@@ -45,8 +45,8 @@ const DemoPageLinks = () => (
       </Link>
     </div>
   </div>
-)
+);
 
-DemoPageLinks.displayName = 'DemoPageLinks'
+DemoPageLinks.displayName = "DemoPageLinks";
 
-export default DemoPageLinks
+export default DemoPageLinks;

@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import {
   useAuthUser,
   withAuthUser,
   withAuthUserSSR,
   AuthAction,
-} from 'next-firebase-auth'
-import Header from '../components/Header'
-import DemoPageLinks from '../components/DemoPageLinks'
-import getAbsoluteURL from '../utils/getAbsoluteURL'
+} from "next-firebase-auth";
+import Header from "../components/Header";
+import DemoPageLinks from "../components/DemoPageLinks";
+import getAbsoluteURL from "../utils/getAbsoluteURL";
 
 const styles = {
   content: {
@@ -16,18 +16,18 @@ const styles = {
   infoTextContainer: {
     marginBottom: 32,
   },
-}
+};
 
 type Props = {
-  favoriteColor?: string
-}
+  favoriteColor?: string;
+};
 
 const defaultProps = {
   favoriteColor: undefined,
-}
+};
 
 const Demo = ({ favoriteColor }: Props) => {
-  const AuthUser = useAuthUser()
+  const AuthUser = useAuthUser();
   return (
     <div>
       <Header email={AuthUser.email} signOut={AuthUser.signOut} />
@@ -47,10 +47,10 @@ const Demo = ({ favoriteColor }: Props) => {
         <DemoPageLinks />
       </div>
     </div>
-  )
-}
+  );
+};
 
-Demo.defaultProps = defaultProps
+Demo.defaultProps = defaultProps;
 
 export const getServerSideProps = withAuthUserSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
@@ -58,28 +58,28 @@ export const getServerSideProps = withAuthUserSSR({
   // The ID token will be null, because `withAuthUserSSR` does not
   // include one. If you need a server-side token, use
   // `withAuthUserTokenSSR`.
-  const token = await AuthUser.getIdToken()
-  const endpoint = getAbsoluteURL('/api/example', req)
+  const token = await AuthUser.getIdToken();
+  const endpoint = getAbsoluteURL("/api/example", req);
   const response = await fetch(endpoint, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Authorization: token || 'unauthenticated',
+      Authorization: token || "unauthenticated",
     },
-  })
-  const data: { favoriteColor?: string } = await response.json()
+  });
+  const data: { favoriteColor?: string } = await response.json();
   if (!response.ok) {
     throw new Error(
       `Data fetching failed with status ${response.status}: ${JSON.stringify(
         data
       )}`
-    )
+    );
   }
   return {
     props: {
       favoriteColor: data.favoriteColor,
     },
-  }
-})
+  };
+});
 
 export default withAuthUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
@@ -88,6 +88,5 @@ export default withAuthUser({
   //   discouraged:
   //   https://github.com/typescript-cheatsheets/react#function-components
   //   This may require changing the type definition for `withAuthUser`.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-})(Demo)
+})(Demo);
