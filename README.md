@@ -12,8 +12,25 @@ It uses:
 - [Firebase](https://firebase.google.com/): auth, data persistence
 - [Circuit UI](https://circuit.sumup.com): SumUp's component library
 
-## Setup
+## Local development
+
+### Setup
 
 You will need to add the required environment variables to a `.env.local` file for local development–see `.env.local.example`.
+
+### Run the app
+
+```bash
+# install dependencies
+yarn
+# start the Next.js dev server
+yarn dev
+# view the app at localhost:3000
+```
+
+### Notes
+
+- Lint/format the code easily with the `yarn lint` (eslint) and `yarn format` (prettier) scripts
+- TypeScript or JavaScript? Yes.
 
 🌈
