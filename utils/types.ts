@@ -6,4 +6,15 @@ export type NextApiRequest = IncomingMessage & {
   cookies: NextApiRequestCookies;
 };
 
-export type ApiResponse = { status: "success" | "error"; message: string };
+export type Merchant = {
+  address: string;
+  category: string;
+  description: string;
+  imageUrl?: string;
+  name: string;
+  links?: {
+    website?: string;
+    instagram?: string;
+    facebook?: string;
+  };
+};

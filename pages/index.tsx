@@ -1,38 +1,161 @@
 import React from "react";
 import {
+  Heading,
+  Card,
+  SubHeading,
+  Text,
+  spacing,
+  Button,
+  IconButton,
+} from "@sumup/circuit-ui";
+import { css } from "@emotion/core";
+import styled from "utils/styled";
+import {
   useAuthUser,
   withAuthUser,
   withAuthUserTokenSSR,
   AuthAction,
-  AuthUserContext,
 } from "next-firebase-auth";
-import Header from "../components/Header";
-import getAbsoluteURL from "../utils/getAbsoluteURL";
+import Header from "components/Header";
+import getAbsoluteURL from "utils/getAbsoluteURL";
+import { Merchant } from "utils/types";
+import { Theme } from "@sumup/design-tokens";
+import { Facebook, Instagram, Link } from "@sumup/icons";
 
-const addDBRecord = async (AuthUser: AuthUserContext) => {
-  const token = await AuthUser.getIdToken();
-  const response = await fetch("/api/createRecord", {
-    method: "POST",
-    headers: {
-      Authorization: token || "unauthenticated",
-    },
-  });
-  const data = await response.json();
-  console.log(data);
-};
+const Grid = styled.ul(
+  ({ theme }) => css`
+    margin: ${theme.spacings.giga} 0;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-gap: 1rem;
+  `
+);
 
-const Index = () => {
+const Wrapper = styled.div(
+  ({ theme }) => css`
+    max-width: 1042px;
+    margin: ${theme.spacings.tera} auto;
+    padding: ${theme.spacings.giga};
+  `
+);
+
+const StyledCard = styled(Card)`
+  padding: 0;
+  overflow: hidden;
+`;
+
+const Index = ({ merchants }: { merchants: Merchant[] }) => {
   const AuthUser = useAuthUser();
   return (
-    <div>
+    <>
       <Header email={AuthUser.email} signOut={AuthUser.signOut} />
-      <div style={{ padding: 32 }}>
-        <h1>Hi {AuthUser.displayName}, you&apos;re logged in!</h1>
-        <button onClick={() => addDBRecord(AuthUser)}>
-          Update timestamp in DB
-        </button>
-      </div>
-    </div>
+      <Wrapper>
+        <Heading noMargin as="h1" size="giga" css={spacing({ bottom: "kilo" })}>
+          {AuthUser.displayName}, welcome to the SumUp Unicorn universe
+        </Heading>
+        <SubHeading
+          noMargin
+          size="mega"
+          css={(theme: Theme) =>
+            css`
+              color: ${theme.colors.n500};
+            `
+          }
+        >
+          Explore, add, share, and visit your favorite merchants
+        </SubHeading>
+        <Grid>
+          {merchants.map((merchant) => (
+            <StyledCard as="li" key={merchant.name}>
+              <img
+                src={merchant.imageUrl}
+                alt=""
+                css={css`
+                  max-height: 200px;
+                  object-fit: cover;
+                `}
+              />
+              <div css={spacing("kilo")}>
+                <Heading
+                  as="h3"
+                  size="mega"
+                  noMargin
+                  css={spacing({ bottom: "kilo" })}
+                >
+                  {merchant.name}
+                </Heading>
+                <Text
+                  noMargin
+                  css={(theme: Theme) =>
+                    css`
+                      color: ${theme.colors.n500};
+                      margin-bottom: ${theme.spacings.kilo};
+                    `
+                  }
+                >
+                  {merchant.description}
+                </Text>
+                <div
+                  css={(theme: Theme) => css`
+                    display: flex;
+                    gap: ${theme.spacings.byte};
+                  `}
+                >
+                  <Button
+                    label="Clap"
+                    css={(theme: Theme) => css`
+                      padding: ${theme.spacings.byte};
+                    `}
+                  >
+                    <span
+                      css={(theme: Theme) => css`
+                        display: block;
+                        height: ${theme.iconSizes.mega};
+                        width: ${theme.iconSizes.mega};
+                      `}
+                    >
+                      👏
+                    </span>
+                  </Button>
+                  {merchant.links?.website && (
+                    <IconButton
+                      size="kilo"
+                      label="Website"
+                      href={merchant.links.website}
+                    >
+                      <Link
+                        css={(theme: Theme) => css`
+                          margin: 0 ${theme.spacings.bit}; // the Link icon only comes in 16px so we adapt its padding
+                        `}
+                      />
+                    </IconButton>
+                  )}
+                  {merchant.links?.instagram && (
+                    <IconButton
+                      size="kilo"
+                      label="Instagram"
+                      href={merchant.links.instagram}
+                    >
+                      <Instagram />
+                    </IconButton>
+                  )}
+                  {merchant.links?.facebook && (
+                    <IconButton
+                      size="kilo"
+                      label="Facebook"
+                      href={merchant.links.facebook}
+                    >
+                      <Facebook />
+                    </IconButton>
+                  )}
+                </div>
+              </div>
+            </StyledCard>
+          ))}
+        </Grid>
+      </Wrapper>
+    </>
   );
 };
 
@@ -40,7 +163,7 @@ export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async ({ AuthUser, req }) => {
   const token = await AuthUser.getIdToken();
-  const endpoint = getAbsoluteURL("/api/example", req);
+  const endpoint = getAbsoluteURL("/api/merchants", req);
   const response = await fetch(endpoint, {
     method: "GET",
     headers: {
@@ -57,11 +180,11 @@ export const getServerSideProps = withAuthUserTokenSSR({
   }
   return {
     props: {
-      favoriteColor: data.favoriteColor,
+      merchants: Object.values(data.data),
     },
   };
 });
 
-export default withAuthUser({
+export default withAuthUser<{ merchants: Merchant[] }>({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(Index);

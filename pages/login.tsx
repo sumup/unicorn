@@ -1,6 +1,7 @@
 import React from "react";
 import { withAuthUser, AuthAction } from "next-firebase-auth";
-import FirebaseAuth from "../components/FirebaseAuth";
+import FirebaseAuth from "components/FirebaseAuth";
+import { Heading, spacing } from "@sumup/circuit-ui";
 
 const Auth = () => (
   <div
@@ -12,7 +13,9 @@ const Auth = () => (
       justifyContent: "center",
     }}
   >
-    <h1>Sign in with your SumUp Google account</h1>
+    <Heading size="giga" as="h1" noMargin css={spacing({ bottom: "mega" })}>
+      Sign in with your SumUp Google account
+    </Heading>
     <FirebaseAuth />
   </div>
 );

@@ -6,7 +6,7 @@ import "firebase/auth";
 // Note that next-firebase-auth inits Firebase for us,
 // so we don't need to.
 
-const firebaseAuthConfig = {
+const firebaseAuthConfig: firebaseui.auth.Config = {
   signInFlow: "popup",
   // Auth providers
   // https://github.com/firebase/firebaseui-web#configure-oauth-providers

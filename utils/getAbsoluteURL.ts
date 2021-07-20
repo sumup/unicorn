@@ -1,4 +1,4 @@
-import { NextApiRequest } from "./types";
+import { NextApiRequest } from "utils/types";
 
 const getAbsoluteURL = (url: string, req?: NextApiRequest) => {
   let host;
