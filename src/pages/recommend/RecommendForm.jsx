@@ -1,14 +1,9 @@
+import { useCallback } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
-import {
-  Input,
-  Select,
-  TextArea,
-  LoadingButton,
-  Heading,
-} from "@sumup/circuit-ui";
+import { Input, Select, TextArea, Heading } from "@sumup/circuit-ui";
 import { StoreFilled } from "@sumup/icons";
-import { useCallback } from "react";
+import { PurpleButton } from "../../components/PurpleButton";
 
 const businessOptions = [
   { value: "5921", label: "Alcohol store" },
@@ -78,19 +73,6 @@ const Form = styled.form(
   `
 );
 
-const RecommendButton = styled(LoadingButton)(
-  () => css`
-    background-color: #a22bda;
-    border-color: #a22bda;
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: #a22bda;
-      border-color: #a22bda;
-    }
-  `
-);
-
 export const RecommendForm = () => {
   const onSubmit = useCallback((e) => {
     e.preventDefault();
@@ -143,9 +125,13 @@ export const RecommendForm = () => {
             placeholder="https://"
           />
 
-          <RecommendButton icon={StoreFilled} type="button" variant="primary">
-            Recommend
-          </RecommendButton>
+          <PurpleButton
+            icon={StoreFilled}
+            type="button"
+            css={{ width: "100%" }}
+          >
+            Save Merchant
+          </PurpleButton>
         </MerchantDetailsWrapper>
       </Form>
     </Container>
