@@ -10,7 +10,7 @@ const initAuth = () => {
     !process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL ||
     !process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY
   ) {
-    throw new Error("Missing environment variables");
+    console.warn("Warning: missing environment variables");
   }
 
   init({
@@ -21,17 +21,17 @@ const initAuth = () => {
     logoutAPIEndpoint: "/api/logout",
     firebaseAdminInitConfig: {
       credential: {
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL || "",
         // Using JSON to handle newline problems when storing the
         // key as a secret in Vercel. See:
         // https://github.com/vercel/vercel/issues/749#issuecomment-707515089
-        privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY),
+        privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY || '""'),
       },
-      databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+      databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL || "",
     },
     firebaseClientInitConfig: {
-      apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
+      apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY || "",
       authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
       databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,

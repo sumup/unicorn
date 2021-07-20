@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
+import "firebase/auth";
 
 // Note that next-firebase-auth inits Firebase for us,
 // so we don't need to.
@@ -35,15 +36,19 @@ const FirebaseAuth = () => {
     }
   }, []);
 
-  if (!renderAuth) {
-    return null;
-  }
+  // if (!renderAuth) {
+  //   return null;
+  // }
 
   return (
-    <StyledFirebaseAuth
-      uiConfig={firebaseAuthConfig}
-      firebaseAuth={firebase.auth()}
-    />
+    <>
+      {renderAuth ? (
+        <StyledFirebaseAuth
+          uiConfig={firebaseAuthConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      ) : null}
+    </>
   );
 };
 
