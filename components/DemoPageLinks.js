@@ -9,42 +9,30 @@ const styles = {
   },
   linkAnchor: {
     color: "teal",
-    display: "block",
     lineHeight: "160%",
   },
 };
 
 const DemoPageLinks = () => (
-  <div style={styles.content}>
-    <h4>Examples</h4>
-    <div>
-      <Link href="/">
-        <a style={styles.linkAnchor}>Home: SSR, no auth required</a>
-      </Link>
-      <Link href="/ssr-auth-required">
-        <a style={styles.linkAnchor}>
-          Example: SSR + data fetching with ID token
-        </a>
-      </Link>
-      <Link href="/ssr-no-token">
-        <a style={styles.linkAnchor}>Example: SSR + no ID token</a>
-      </Link>
-      <Link href="/ssr-custom-routing">
-        <a style={styles.linkAnchor}>Example: SSR + custom routing</a>
-      </Link>
-      <Link href="/static-auth-required-loader">
-        <a style={styles.linkAnchor}>
-          Example: static + loader + data fetching with ID token
-        </a>
-      </Link>
-      <Link href="/auth">
-        <a style={styles.linkAnchor}>Login page: static</a>
-      </Link>
-      <Link href="/auth-ssr">
-        <a style={styles.linkAnchor}>Login page: server-rendered</a>
-      </Link>
-    </div>
-  </div>
+  <nav style={styles.content}>
+    <h2>Pages</h2>
+    <ul>
+      <li>
+        <Link href="/login">
+          <a style={styles.linkAnchor}>Login page</a>
+        </Link>
+        : static, no auth required. All pages will redirect unauthenticated
+        users there.
+      </li>
+      <li>
+        <Link href="/">
+          <a style={styles.linkAnchor}>Overview</a>
+        </Link>
+        : auth required.
+      </li>
+      <li>More pages coming soon... 🏗</li>
+    </ul>
+  </nav>
 );
 
 DemoPageLinks.displayName = "DemoPageLinks";
