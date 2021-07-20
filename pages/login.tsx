@@ -1,19 +1,19 @@
-import React from "react";
-import { withAuthUser, AuthAction } from "next-firebase-auth";
-import FirebaseAuth from "components/FirebaseAuth";
-import { Heading, spacing } from "@sumup/circuit-ui";
+import React from 'react';
+import { withAuthUser, AuthAction } from 'next-firebase-auth';
+import FirebaseAuth from 'components/FirebaseAuth';
+import { Heading, spacing } from '@sumup/circuit-ui';
 
 const Auth = () => (
   <div
     style={{
-      display: "flex",
-      height: "100vh",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
+      display: 'flex',
+      height: '100vh',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     }}
   >
-    <Heading size="giga" as="h1" noMargin css={spacing({ bottom: "mega" })}>
+    <Heading size="giga" as="h1" noMargin css={spacing({ bottom: 'mega' })}>
       Sign in with your SumUp Google account
     </Heading>
     <FirebaseAuth />
