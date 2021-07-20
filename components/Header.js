@@ -27,19 +27,19 @@ const Rainbow = styled.hr(
 		height: ${theme.borderWidth.mega};
 		width: 100%;
 		background: linear-gradient(
-			to right,
-			#f9ad9d,
-			#f6ba84,
-			#f8c863,
-			#f3e175,
-			#e9e68a,
-			#cfe6b0,
-			#a1e09a,
-			#72dad3,
-			#69c4ea,
-			#5bbdec,
-			#8261d4,
-			#e457a9
+			90deg,
+			#f9ad9d 0%,
+			#f6ba84 8.12%,
+			#f8c863 14.11%,
+			#f3e175 21.05%,
+			#e9e68a 28.4%,
+			#cfe6b0 35.75%,
+			#a1e09a 43.97%,
+			#72dad3 60.41%,
+			#69c4ea 67.14%,
+			#5bbdec 76.61%,
+			#8261d4 87.87%,
+			#e457a9 99.78%
 		);
 		margin: 0;
 		padding: 0;
