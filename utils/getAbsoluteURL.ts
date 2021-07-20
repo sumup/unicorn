@@ -1,6 +1,6 @@
-/* globals window */
+import { NextApiRequest } from "./types";
 
-const getAbsoluteURL = (url, req = null) => {
+const getAbsoluteURL = (url: string, req?: NextApiRequest) => {
   let host;
   if (req) {
     host = req.headers.host;
@@ -12,7 +12,7 @@ const getAbsoluteURL = (url, req = null) => {
     }
     host = window.location.host;
   }
-  const isLocalhost = host.indexOf("localhost") === 0;
+  const isLocalhost = host && host.indexOf("localhost") === 0;
   const protocol = isLocalhost ? "http" : "https";
   return `${protocol}://${host}${url}`;
 };

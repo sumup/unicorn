@@ -3,6 +3,16 @@ import { init } from "next-firebase-auth";
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000;
 
 const initAuth = () => {
+  if (
+    !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
+    !process.env.FIREBASE_CLIENT_EMAIL ||
+    !process.env.FIREBASE_PRIVATE_KEY ||
+    !process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL ||
+    !process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY
+  ) {
+    throw new Error("Missing environment variables");
+  }
+
   init({
     debug: false,
     authPageURL: "/login",
@@ -16,9 +26,7 @@ const initAuth = () => {
         // Using JSON to handle newline problems when storing the
         // key as a secret in Vercel. See:
         // https://github.com/vercel/vercel/issues/749#issuecomment-707515089
-        privateKey: process.env.FIREBASE_PRIVATE_KEY
-          ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
-          : undefined,
+        privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY),
       },
       databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
     },
