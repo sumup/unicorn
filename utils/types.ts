@@ -5,3 +5,5 @@ import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 export type NextApiRequest = IncomingMessage & {
   cookies: NextApiRequestCookies;
 };
+
+export type ApiResponse = { status: "success" | "error"; message: string };

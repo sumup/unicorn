@@ -1,7 +1,6 @@
 import { verifyIdToken, getFirebaseAdmin } from "next-firebase-auth";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Response = { status: string; message: string };
+import { ApiResponse } from "../../utils/types";
 
 function writeRecord() {
   const db = getFirebaseAdmin().database();
@@ -10,7 +9,10 @@ function writeRecord() {
   });
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse>
+) => {
   if (!(req.headers && req.headers.authorization)) {
     return res
       .status(400)
