@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
-import { Input, Select, TextArea, Heading } from "@sumup/circuit-ui";
+import { Input, Select, Heading } from "@sumup/circuit-ui";
 import { StoreFilled } from "@sumup/icons";
 import { PurpleButton } from "../../components/PurpleButton";
+import { GeocoderInput } from "../../components/GeoCodeInput/GeocodeInput";
 
 const businessOptions = [
   { value: "5921", label: "Alcohol store" },
@@ -95,6 +96,11 @@ export const RecommendForm = () => {
             label="Short description"
             name="description"
             placeholder="Pizza/cocktail bar"
+          />
+          <GeocoderInput
+            country="DE"
+            label="Merchant address"
+            placeholder="Type to search"
           />
           <Input
             label="Enter the address"
