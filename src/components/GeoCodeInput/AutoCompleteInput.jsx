@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import Downshift from "downshift";
@@ -52,16 +51,6 @@ const optionSelectedStyles = ({ selected, theme }) =>
 
 const Option = styled(Text)(optionBaseStyles, optionSelectedStyles);
 
-const optionsPropType = PropTypes.arrayOf(
-  PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      value: PropTypes.string,
-      children: PropTypes.any,
-    }),
-  ])
-);
-
 export class AutoCompleteInput extends Component {
   handleDownShiftRef = (ref) => {
     this.downshiftRef = ref;
@@ -69,6 +58,14 @@ export class AutoCompleteInput extends Component {
 
   handleOuterClick = (state) => {
     state.setState({ inputValue: this.props.value });
+  };
+
+  formatSearchInputValue = (v) => {
+    if (v && v != null && typeof v === "object") {
+      return v?.place_name;
+    }
+
+    return v || "";
   };
 
   render() {
@@ -96,7 +93,13 @@ export class AutoCompleteInput extends Component {
           highlightedIndex,
         }) => (
           <AutoCompleteWrapper {...getRootProps({ refKey: "ref" })}>
-            <SearchInput {...getInputProps(inputProps)} noMargin />
+            <SearchInput
+              {...getInputProps({
+                ...inputProps,
+                value: this.formatSearchInputValue(this.props.value),
+              })}
+              noMargin
+            />
             {isOpen && !isEmpty(options) && (
               <Options spacing={"mega"}>
                 {options.map((option, index) => {

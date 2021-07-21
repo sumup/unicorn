@@ -32,8 +32,8 @@ export class GeocoderInput extends Component {
     const foundAddress = this.state.results.find(
       (obj) => obj.place_name === selection
     );
-    console.log({ foundAddress });
 
+    this.props.onChange(foundAddress);
     // this.props.handleSuggestionSelect(formattedAddress);
   };
 
@@ -47,6 +47,7 @@ export class GeocoderInput extends Component {
   };
 
   render() {
+    // console.log(this.props);
     const suggestions = this.state.results.map((obj) => ({
       value: obj.place_name,
       ...obj,

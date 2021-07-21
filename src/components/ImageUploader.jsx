@@ -17,8 +17,8 @@ const storageRef = firebase
   .storage(process.env.NEXT_PUBLIC_FIREBASE_STORAGE)
   .ref();
 
-export const ImageUploader = () => {
-  const [imageUrl, setImageUrl] = useState("");
+export const ImageUploader = ({ onChange, value }) => {
+  const [imageUrl, setImageUrl] = useState(value);
   const [error, setError] = useState("");
 
   /**
@@ -38,13 +38,16 @@ export const ImageUploader = () => {
   const onClear = () => {
     setError("");
     setImageUrl("");
+    onChange([]);
   };
 
-  const onChange = (file) => {
-    onClear();
+  const onInputChange = (file) => {
+    setError("");
+    setImageUrl("");
     return uploadFile(file)
       .then((remoteImageUrl) => {
         setImageUrl(remoteImageUrl);
+        onChange([remoteImageUrl]);
       })
       .catch((e) => {
         console.error(e);
@@ -53,17 +56,20 @@ export const ImageUploader = () => {
   };
 
   return (
-    <ImageInput
-      label="Upload an image"
-      multiple
-      clearButtonLabel="Clear"
-      src={imageUrl}
-      onChange={onChange}
-      onClear={onClear}
-      invalid={!!error}
-      validationHint={error}
-      loadingLabel="Uploading"
-      component={Avatar}
-    />
+    <>
+      <p>Add photos</p>
+      <ImageInput
+        label="Upload an image"
+        multiple
+        clearButtonLabel="Clear"
+        src={imageUrl}
+        onChange={onInputChange}
+        onClear={onClear}
+        invalid={!!error}
+        validationHint={error}
+        loadingLabel="Uploading"
+        component={Avatar}
+      />
+    </>
   );
 };

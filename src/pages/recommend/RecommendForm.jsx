@@ -1,115 +1,127 @@
 import { useCallback } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import { Input, Select, Heading } from "@sumup/circuit-ui";
+import { useForm, Controller } from "react-hook-form";
+
+import { Input, Select, Heading, TextArea } from "@sumup/circuit-ui";
 import { StoreFilled } from "@sumup/icons";
 import { PurpleButton } from "../../components/PurpleButton";
 import { GeocoderInput } from "../../components/GeoCodeInput/GeocodeInput";
 import { ImageUploader } from "../../components/ImageUploader";
 import { businessOptions } from "./business-options";
+import {
+  Container,
+  Form,
+  ImagesWrapper,
+  MerchantDetailsWrapper,
+} from "./RecommendForm.styles";
 
-const Container = styled.div(
-  () => css`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  `
-);
+const errorMessageByType = {
+  required: "This field is required",
+};
 
-const MerchantDetailsWrapper = styled.div(
-  ({ theme }) => css`
-    width: 320px;
-    max-width: 100%;
-    ${theme.mq.untilMega} {
-      width: 100%;
-    }
-  `
-);
+export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
-const ImagesWrapper = styled.div(
-  ({ theme }) => css`
-    width: 320px;
-    max-width: 100%;
-    ${theme.mq.untilMega} {
-      width: 100%;
-    }
-  `
-);
-
-const Form = styled.form(
-  ({ theme }) => css`
-    display: flex;
-    flex-direction: row;
-    ${theme.mq.untilMega} {
-      flex-direction: column;
-    }
-  `
-);
-
-export const RecommendForm = () => {
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-  }, []);
+  const onSubmit = useCallback(
+    (data) => {
+      // TODO: map data properly
+      handleFormSubmit(data);
+    },
+    [handleFormSubmit]
+  );
 
   return (
     <Container>
       <Heading size="tera">Add SumUp Merchant</Heading>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <ImagesWrapper>
-          <ImageUploader />
+          <Controller
+            name="images"
+            control={control}
+            render={({ field }) => {
+              return <ImageUploader {...field} />;
+            }}
+          />
         </ImagesWrapper>
         <MerchantDetailsWrapper>
           <Input
             label="Merchant name"
-            name="merchantName"
             placeholder="Brand name"
+            validationHint={errorMessageByType[errors?.merchantName?.type]}
+            invalid={!!errors.merchantName}
+            {...register("merchantName", { required: true })}
           />
-          <Select label="Type of business" options={businessOptions} />
+          <Select
+            label="Type of business"
+            options={businessOptions}
+            validationHint={errorMessageByType[errors?.businessType?.type]}
+            invalid={!!errors.businessType}
+            {...register("businessType", { required: true })}
+          />
+
+          <TextArea
+            label="Short description"
+            placeholder="Pizza/cocktail bar"
+            validationHint={errorMessageByType[errors?.description?.type]}
+            invalid={!!errors.description}
+            {...register("description", { required: true })}
+          />
+
+          <Controller
+            name="address"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <GeocoderInput
+                  country="DE"
+                  label="Merchant address"
+                  placeholder="Type to search"
+                  invalid={!!errors.address}
+                  validationHint={errorMessageByType[errors?.address?.type]}
+                  {...field}
+                />
+              );
+            }}
+          />
 
           <Input
-            label="Short description"
-            name="description"
-            placeholder="Pizza/cocktail bar"
-          />
-          <GeocoderInput
-            country="DE"
-            label="Merchant address"
-            placeholder="Type to search"
-          />
-          <Input
-            label="Enter the address"
-            name="merchantAddress"
-            placeholder="Enter merchant address"
-          />
-          <Input
             label="Phone number for reservations"
-            name="phoneNumber"
             placeholder="+49 234 1210 78 44"
+            optionalLabel={"optional"}
+            {...register("phoneNumber")}
           />
 
           <Input
             label="Website"
-            name="merchantWebsite"
             placeholder="https://"
+            optionalLabel={"optional"}
+            {...register("merchantWebsite")}
           />
 
           <Input
             label="Instagram"
-            name="merchantInstagram"
             placeholder="https://"
+            optionalLabel={"optional"}
+            {...register("merchantInstagram")}
           />
 
           <Input
             label="Facebook"
-            name="merchantFacebook"
             placeholder="https://"
+            optionalLabel={"optional"}
+            {...register("merchantFacebook")}
           />
 
           <PurpleButton
             icon={StoreFilled}
-            type="button"
+            type="submit"
             css={{ width: "100%" }}
+            isLoading={isLoading}
           >
             Save Merchant
           </PurpleButton>
