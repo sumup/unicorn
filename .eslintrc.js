@@ -8,6 +8,8 @@ module.exports = require('@sumup/foundry/eslint')(
   {
     rules: {
       '@typescript-eslint/no-shadow': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      'react/prop-types': 'off',
     },
   },
 );

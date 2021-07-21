@@ -12,8 +12,8 @@ import { css } from '@emotion/core';
 import {
   useAuthUser,
   withAuthUser,
-  withAuthUserTokenSSR,
   AuthAction,
+  withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
 import { Facebook, Instagram, Link } from '@sumup/icons';
@@ -50,7 +50,7 @@ const Index = ({ merchants }: { merchants: Merchant[] }) => {
   const AuthUser = useAuthUser();
   return (
     <>
-      <Header email={AuthUser.email} signOut={AuthUser.signOut} />
+      <Header />
       <Wrapper>
         <Heading noMargin as="h1" size="giga" css={spacing({ bottom: 'kilo' })}>
           {AuthUser.displayName}, welcome to the SumUp Unicorn universe
