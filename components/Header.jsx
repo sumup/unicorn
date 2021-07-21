@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useAuthUser } from "next-firebase-auth";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { StoreFilled } from "@sumup/icons";
+import { Avatar } from "@sumup/circuit-ui";
 import { RainbowButton } from "../src/components/RainbowButton";
 
 const HeaderContainer = styled.div(
@@ -60,38 +61,52 @@ const RecommendButton = styled(RainbowButton)(
 
 const unicorn = "🦄 Unicorn";
 
-const Header = ({ email, signOut }) => (
-  <>
-    <HeaderContainer>
-      <UnicornStyle>{unicorn}</UnicornStyle>
-      {email ? (
-        <>
-          <Link href="/recommend">
-            <a>
-              <RecommendButton type="button">
-                <span>
-                  <StoreFilled />
-                  &nbsp; Recommend a business
-                </span>
-              </RecommendButton>
-            </a>
-          </Link>
-          &nbsp;
-          <Image src="/avatar.svg" alt="avatar" width="50" height="50" />
-        </>
-      ) : (
-        <>
-          <p>You are not signed in.</p>
-          <Link href="/auth">
-            <a>
-              <RainbowButton type="button">Sign in</RainbowButton>
-            </a>
-          </Link>
-        </>
-      )}
-    </HeaderContainer>
-    <Rainbow />
-  </>
-);
+const Header = () => {
+  const { email, photoURL, clientInitialized } = useAuthUser();
+  // TODO: improve/refactor this
+  if (!clientInitialized) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <>
+      <HeaderContainer>
+        <UnicornStyle>{unicorn}</UnicornStyle>
+        {email ? (
+          <>
+            <Link href="/recommend">
+              <a>
+                <RecommendButton type="button">
+                  <span>
+                    <StoreFilled />
+                    &nbsp; Recommend a business
+                  </span>
+                </RecommendButton>
+              </a>
+            </Link>
+            &nbsp;
+            {/* <Image src="/avatar.svg" alt="avatar" width="50" height="50" /> */}
+            <Avatar
+              src={photoURL || "/avatar.svg"}
+              variant="identity"
+              size="giga"
+              referrerPolicy="no-referrer"
+            />
+          </>
+        ) : (
+          <>
+            <p>You are not signed in.</p>
+            <Link href="/auth">
+              <a>
+                <RainbowButton type="button">Sign in</RainbowButton>
+              </a>
+            </Link>
+          </>
+        )}
+      </HeaderContainer>
+      <Rainbow />
+    </>
+  );
+};
 
 export default Header;

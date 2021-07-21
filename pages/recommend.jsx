@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
 import Header from "../components/Header";
 import { RecommendForm } from "../src/pages/recommend/RecommendForm";
 import { useCallback } from "react";
@@ -33,6 +29,6 @@ const Recommend = () => {
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR()();
-
-export default withAuthUser()(Recommend);
+export default withAuthUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Recommend);
