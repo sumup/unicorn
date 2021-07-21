@@ -1,16 +1,17 @@
-import React from "react";
-import Head from "next/head";
-import { ThemeProvider } from "emotion-theming";
-import { light } from "@sumup/design-tokens";
-import type { AppProps } from "next/app";
-import "../styles/globals.css";
-import initAuth from "../utils/initAuth";
+import React from 'react';
+import Head from 'next/head';
+import { BaseStyles } from '@sumup/circuit-ui';
+import { ThemeProvider } from 'emotion-theming';
+import { light } from '@sumup/design-tokens';
+import type { AppProps } from 'next/app';
+import initAuth from 'utils/initAuth';
 
 initAuth();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <ThemeProvider theme={light}>
+      <BaseStyles />
       <Head>
         <title>Unicorn</title>
         <link

@@ -37,7 +37,7 @@ export const search = (searchValue, countries) => {
   const accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   const uri = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
     searchValue
-  )}.json?access_token=${accessToken}&types=poi&country=${countries}`;
+  )}.json?access_token=${accessToken}&types=address&country=${countries}`;
 
   return new Promise((resolve, reject) =>
     fetch(uri)

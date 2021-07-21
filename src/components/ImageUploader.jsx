@@ -1,7 +1,7 @@
-import { ImageInput, Avatar } from "@sumup/circuit-ui";
-import { useState } from "react";
-import firebase from "firebase";
-import "firebase/storage";
+import { ImageInput, Avatar } from '@sumup/circuit-ui';
+import React, { useState } from 'react';
+import firebase from 'firebase';
+import 'firebase/storage';
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -19,31 +19,28 @@ const storageRef = firebase
 
 export const ImageUploader = ({ onChange, value }) => {
   const [imageUrl, setImageUrl] = useState(value);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   /**
    * @param {File} file
    */
-  const uploadFile = (file) => {
-    return storageRef
+  const uploadFile = (file) =>
+    storageRef
       .child(`images/${file.name}`)
       .put(file, {
         contentType: file.type,
       })
-      .then((snapshot) => {
-        return snapshot.ref.getDownloadURL();
-      });
-  };
+      .then((snapshot) => snapshot.ref.getDownloadURL());
 
   const onClear = () => {
-    setError("");
-    setImageUrl("");
+    setError('');
+    setImageUrl('');
     onChange([]);
   };
 
   const onInputChange = (file) => {
-    setError("");
-    setImageUrl("");
+    setError('');
+    setImageUrl('');
     return uploadFile(file)
       .then((remoteImageUrl) => {
         setImageUrl(remoteImageUrl);
@@ -51,7 +48,7 @@ export const ImageUploader = ({ onChange, value }) => {
       })
       .catch((e) => {
         console.error(e);
-        setError("An error occurred while uploading file!");
+        setError('An error occurred while uploading file!');
       });
   };
 
