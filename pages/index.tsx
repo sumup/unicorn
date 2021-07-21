@@ -9,18 +9,19 @@ import {
   IconButton,
 } from '@sumup/circuit-ui';
 import { css } from '@emotion/core';
-import styled from 'utils/styled';
 import {
   useAuthUser,
   withAuthUser,
   withAuthUserTokenSSR,
   AuthAction,
 } from 'next-firebase-auth';
-import Header from 'components/Header';
-import getAbsoluteURL from 'utils/getAbsoluteURL';
-import { Merchant } from 'utils/types';
 import { Theme } from '@sumup/design-tokens';
 import { Facebook, Instagram, Link } from '@sumup/icons';
+
+import Header from '../components/Header';
+import getAbsoluteURL from '../utils/getAbsoluteURL';
+import { Merchant } from '../utils/types';
+import styled from '../utils/styled';
 
 const Grid = styled.ul(
   ({ theme }) => css`
