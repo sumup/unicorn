@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import { debounce } from "lodash/fp";
-import { AutoCompleteInput } from "./AutoCompleteInput";
-import { getAddressFieldObject, search } from "./geocode.service";
+import React, { Component } from 'react';
+import { debounce } from 'lodash/fp';
+
+import { AutoCompleteInput } from './AutoCompleteInput';
+import { search } from './geocode.service';
 
 const SEARCH_DELAY = 500;
 
@@ -11,7 +12,7 @@ export class GeocoderInput extends Component {
   };
 
   updateSearchParams = (inputValue) => {
-    if (inputValue === "") {
+    if (inputValue === '') {
       return;
     }
 
@@ -30,7 +31,7 @@ export class GeocoderInput extends Component {
 
   updateValue = (selection) => {
     const foundAddress = this.state.results.find(
-      (obj) => obj.place_name === selection
+      (obj) => obj.place_name === selection,
     );
 
     this.props.onChange(foundAddress);
@@ -42,7 +43,7 @@ export class GeocoderInput extends Component {
       return this.props.value;
     }
 
-    const addressLines = value.split(",");
+    const addressLines = value.split(',');
     return addressLines[0];
   };
 

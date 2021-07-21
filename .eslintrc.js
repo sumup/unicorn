@@ -10,6 +10,7 @@ module.exports = require('@sumup/foundry/eslint')(
       '@typescript-eslint/no-shadow': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       'react/prop-types': 'off',
+      'jsx-a11y/anchor-is-valid': 'off',
     },
   },
 );

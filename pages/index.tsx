@@ -17,11 +17,9 @@ import {
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
 import { Facebook, Instagram, Link } from '@sumup/icons';
-
-import Header from '../components/Header';
-import getAbsoluteURL from '../utils/getAbsoluteURL';
-import { Merchant } from '../utils/types';
-import styled from '../utils/styled';
+import getAbsoluteURL from 'utils/getAbsoluteURL';
+import { Merchant } from 'utils/types';
+import styled from 'utils/styled';
 
 const Grid = styled.ul(
   ({ theme }) => css`
@@ -36,8 +34,8 @@ const Grid = styled.ul(
 const Wrapper = styled.div(
   ({ theme }) => css`
     max-width: 1042px;
-    margin: ${theme.spacings.tera} auto;
-    padding: ${theme.spacings.giga};
+    margin: auto;
+    padding: 0 ${theme.spacings.giga};
   `,
 );
 
@@ -49,115 +47,112 @@ const StyledCard = styled(Card)`
 const Index = ({ merchants }: { merchants: Merchant[] }) => {
   const AuthUser = useAuthUser();
   return (
-    <>
-      <Header />
-      <Wrapper>
-        <Heading noMargin as="h1" size="giga" css={spacing({ bottom: 'kilo' })}>
-          {AuthUser.displayName}, welcome to the SumUp Unicorn universe
-        </Heading>
-        <SubHeading
-          noMargin
-          size="mega"
-          css={(theme: Theme) =>
-            css`
-              color: ${theme.colors.n500};
-            `
-          }
-        >
-          Explore, add, share, and visit your favorite merchants
-        </SubHeading>
-        <Grid>
-          {merchants.map((merchant) => (
-            <StyledCard as="li" key={merchant.name}>
-              <img
-                src={merchant.imageUrl}
-                alt=""
-                css={css`
-                  max-height: 200px;
-                  object-fit: cover;
+    <Wrapper>
+      <Heading noMargin as="h1" size="giga" css={spacing({ bottom: 'kilo' })}>
+        {AuthUser.displayName}, welcome to the SumUp Unicorn universe
+      </Heading>
+      <SubHeading
+        noMargin
+        size="mega"
+        css={(theme: Theme) =>
+          css`
+            color: ${theme.colors.n500};
+          `
+        }
+      >
+        Explore, add, share, and visit your favorite merchants
+      </SubHeading>
+      <Grid>
+        {merchants.map((merchant) => (
+          <StyledCard as="li" key={merchant.name}>
+            <img
+              src={merchant.imageUrl}
+              alt=""
+              css={css`
+                max-height: 200px;
+                object-fit: cover;
+              `}
+            />
+            <div css={spacing('kilo')}>
+              <Heading
+                as="h3"
+                size="mega"
+                noMargin
+                css={spacing({ bottom: 'kilo' })}
+              >
+                {merchant.name}
+              </Heading>
+              <Text
+                noMargin
+                css={(theme: Theme) =>
+                  css`
+                    color: ${theme.colors.n500};
+                    margin-bottom: ${theme.spacings.kilo};
+                  `
+                }
+              >
+                {merchant.description}
+              </Text>
+              <div
+                css={(theme: Theme) => css`
+                  display: flex;
+                  gap: ${theme.spacings.byte};
                 `}
-              />
-              <div css={spacing('kilo')}>
-                <Heading
-                  as="h3"
-                  size="mega"
-                  noMargin
-                  css={spacing({ bottom: 'kilo' })}
-                >
-                  {merchant.name}
-                </Heading>
-                <Text
-                  noMargin
-                  css={(theme: Theme) =>
-                    css`
-                      color: ${theme.colors.n500};
-                      margin-bottom: ${theme.spacings.kilo};
-                    `
-                  }
-                >
-                  {merchant.description}
-                </Text>
-                <div
+              >
+                <Button
                   css={(theme: Theme) => css`
-                    display: flex;
-                    gap: ${theme.spacings.byte};
+                    padding: ${theme.spacings.byte};
                   `}
                 >
-                  <Button
+                  <span
+                    role="img"
+                    aria-label="Clap"
                     css={(theme: Theme) => css`
-                      padding: ${theme.spacings.byte};
+                      display: block;
+                      height: ${theme.iconSizes.mega};
+                      width: ${theme.iconSizes.mega};
                     `}
                   >
-                    <span
-                      role="img"
-                      aria-label="Clap"
+                    👏
+                  </span>
+                </Button>
+                {merchant.links?.website && (
+                  <IconButton
+                    size="kilo"
+                    label="Website"
+                    href={merchant.links.website}
+                  >
+                    <Link
                       css={(theme: Theme) => css`
-                        display: block;
-                        height: ${theme.iconSizes.mega};
-                        width: ${theme.iconSizes.mega};
+                        margin: 0 ${theme.spacings.bit}; // the Link icon only comes in 16px so we adapt its padding
                       `}
-                    >
-                      👏
-                    </span>
-                  </Button>
-                  {merchant.links?.website && (
-                    <IconButton
-                      size="kilo"
-                      label="Website"
-                      href={merchant.links.website}
-                    >
-                      <Link
-                        css={(theme: Theme) => css`
-                          margin: 0 ${theme.spacings.bit}; // the Link icon only comes in 16px so we adapt its padding
-                        `}
-                      />
-                    </IconButton>
-                  )}
-                  {merchant.links?.instagram && (
-                    <IconButton
-                      size="kilo"
-                      label="Instagram"
-                      href={merchant.links.instagram}
-                    >
-                      <Instagram />
-                    </IconButton>
-                  )}
-                  {merchant.links?.facebook && (
-                    <IconButton
-                      size="kilo"
-                      label="Facebook"
-                      href={merchant.links.facebook}
-                    >
-                      <Facebook />
-                    </IconButton>
-                  )}
-                </div>
+                    />
+                  </IconButton>
+                )}
+                {merchant.links?.instagram && (
+                  <IconButton
+                    size="kilo"
+                    label="Instagram"
+                    href={merchant.links.instagram}
+                  >
+                    <Instagram />
+                  </IconButton>
+                )}
+                {merchant.links?.facebook && (
+                  <IconButton
+                    size="kilo"
+                    label="Facebook"
+                    href={merchant.links.facebook}
+                  >
+                    <Facebook />
+                  </IconButton>
+                )}
               </div>
-            </StyledCard>
-          ))}
-        </Grid>
-      </Wrapper>
-    </>
+            </div>
+          </StyledCard>
+        ))}
+      </Grid>
+    </Wrapper>
   );
 };
 

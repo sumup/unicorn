@@ -1,6 +1,7 @@
 import { verifyIdToken, getFirebaseAdmin } from 'next-firebase-auth';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { DataSnapshot } from '@firebase/database-types';
+import { Merchant } from 'utils/types';
 
 async function auth(req: NextApiRequest): Promise<{
   status: number;
@@ -31,6 +32,8 @@ async function getMerchants(): Promise<{
   }
 }
 
+// type CreateMerchantRequest = Omit<NextApiRequest, 'body'> & { body: Merchant };
+
 async function createMerchant(
   req: NextApiRequest,
 ): Promise<{ status: number; message: string }> {
@@ -40,10 +43,10 @@ async function createMerchant(
   }
   // save in Firebase
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const merchant: Merchant = JSON.parse(req.body);
     const db = getFirebaseAdmin().database();
-    await db.ref('lastCalled').set({
-      timestamp: Date.now(),
-    });
+    await db.ref('merchants').push().set(merchant);
     return { status: 201, message: 'Merchant created' };
   } catch (error) {
     return { status: 500, message: "Couldn't save the merchant" };
