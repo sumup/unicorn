@@ -1,22 +1,20 @@
 import { ImageInput, Avatar } from '@sumup/circuit-ui';
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/storage';
 
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE,
-  });
-}
+import { firebase } from '../lib/firebase';
+import 'firebase/storage';
 
 const storageRef = firebase
   .app()
   .storage(process.env.NEXT_PUBLIC_FIREBASE_STORAGE)
   .ref();
+
+export const StyledP = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 4px;
+`;
 
 export const ImageUploader = ({ onChange, value }) => {
   const [imageUrl, setImageUrl] = useState(value);
@@ -55,7 +53,7 @@ export const ImageUploader = ({ onChange, value }) => {
 
   return (
     <>
-      <p>Add photos</p>
+      <StyledP>Add photo</StyledP>
       <ImageInput
         label="Upload an image"
         multiple

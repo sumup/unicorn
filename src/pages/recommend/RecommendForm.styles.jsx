@@ -22,7 +22,8 @@ export const MerchantDetailsWrapper = styled.div(
 
 export const ImagesWrapper = styled.div(
   ({ theme }) => css`
-    width: 320px;
+    width: auto;
+    margin-right: 48px;
     max-width: 100%;
     ${theme.mq.untilMega} {
       width: 100%;

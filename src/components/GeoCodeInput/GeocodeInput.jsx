@@ -33,12 +33,16 @@ export class GeocoderInput extends Component {
     const foundAddress = this.state.results.find(
       (obj) => obj.place_name === selection,
     );
-    console.log(foundAddress);
 
-    // this.props.onChange({
-    //   center: {},
-
-    // });
+    this.props.onChange({
+      center: {
+        lng: foundAddress.center[0],
+        lat: foundAddress.center[1],
+      },
+      country: foundAddress.context.find((item) => item.id.includes('country.'))
+        ?.short_code,
+      place_name: foundAddress.place_name,
+    });
   };
 
   handleItemToString = (value) => {

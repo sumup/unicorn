@@ -24,7 +24,7 @@ export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isDirty, isValid, isValidating },
   } = useForm();
 
   const onSubmit = useCallback(
@@ -48,10 +48,12 @@ export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
     [handleFormSubmit],
   );
 
+  const isReadyForSubmit = isDirty && isValid && !isValidating;
+
   return (
     <Container>
       <Heading noMargin css={spacing({ bottom: 'tera' })} size="giga">
-        Recommend a SumUp Merchant
+        Add SumUp Merchant
       </Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ImagesWrapper>
@@ -97,7 +99,6 @@ export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
             rules={{ required: true }}
             render={({ field }) => (
               <GeocoderInput
-                country="DE"
                 label="Merchant address"
                 placeholder="Type to search"
                 invalid={!!errors.address}
@@ -140,6 +141,7 @@ export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
             type="submit"
             css={{ width: '100%' }}
             isLoading={isLoading}
+            disabled={!isReadyForSubmit}
           >
             Save Merchant
           </PurpleButton>
