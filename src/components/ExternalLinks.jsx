@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, Anchor } from '@sumup/circuit-ui';
+import { Anchor } from '@sumup/circuit-ui';
 import { Facebook, Instagram, Link } from '@sumup/icons';
 
 export const PhoneSvgIcon = () => (
@@ -38,7 +38,7 @@ export const ExternalLinks = ({ website, facebook, instagram, phone }) => (
     css={(theme) => css`
       display: flex;
       gap: ${theme.spacings.byte};
-      justify-content: space-between;
+      justify-content: flex-end;
     `}
   >
     {/* <Button
