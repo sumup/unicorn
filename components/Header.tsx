@@ -91,6 +91,7 @@ const Header = () => {
                   variant="identity"
                   size="giga"
                   alt=""
+                  referrerPolicy="no-referrer"
                 />
               </>
             ) : (
