@@ -15,12 +15,11 @@ import {
 } from 'next-firebase-auth';
 import { ArrowLeft } from '@sumup/icons';
 import Link from 'next/link';
-
-import { CardIconSvg } from '../../src/pages/business/svg-icons';
-import styled from '../../utils/styled';
-import { firebase } from '../../src/lib/firebase';
-import 'firebase/database';
-import { ExternalLinks } from '../../src/components/ExternalLinks';
+import { CardIconSvg } from 'src/pages/business/svg-icons';
+import styled from 'utils/styled';
+import { ExternalLinks } from 'src/components/ExternalLinks';
+import { Merchant } from 'utils/types';
+import getAbsoluteURL from 'utils/getAbsoluteURL';
 
 const Wrapper = styled.div(
   () => css`
@@ -83,7 +82,7 @@ const StyledImage = styled(Image)`
   object-fit: cover;
 `;
 
-const BusinessPage = ({ merchant }) => (
+const BusinessPage = ({ merchant }: { merchant: Merchant }) => (
   <Wrapper>
     <div>
       <Link href="/">
@@ -120,7 +119,7 @@ const BusinessPage = ({ merchant }) => (
     </div>
     <div>
       <Heading size="tera">Photos</Heading>
-      <StyledImage src={merchant.imageUrl} atl={merchant.name} />
+      <StyledImage src={merchant.imageUrl || ''} alt={merchant.name} />
       <Heading css={{ marginTop: 48 }} size="tera">
         Comments
       </Heading>
@@ -130,20 +129,24 @@ const BusinessPage = ({ merchant }) => (
 
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ query }) => {
-  const dbRef = firebase.app().database().ref();
-  const snapshot = await dbRef.child('merchants').child(query.id).get();
-  if (!snapshot.exists()) {
-    return {
-      notFound: true,
-    };
+})(async ({ query, AuthUser, req }) => {
+  const token = await AuthUser.getIdToken();
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  const endpoint = getAbsoluteURL(`/api/merchants/${query.id}`, req);
+  const response = await fetch(endpoint, {
+    method: 'GET',
+    headers: { Authorization: token || '' },
+  });
+  if (!response.ok) {
+    throw new Error(`Data fetching failed with status ${response.status}`);
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const merchant: Merchant = await response.json();
   return {
-    props: { merchant: snapshot.val() },
+    props: { merchant },
   };
 });
 
-export default withAuthUser({
+export default withAuthUser<{ merchant: Merchant }>({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(BusinessPage);

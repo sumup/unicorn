@@ -8,7 +8,9 @@ export type NextApiRequest = IncomingMessage & {
 };
 
 export type Merchant = {
-  address: string;
+  address: {
+    place_name: string;
+  };
   category: string;
   description: string;
   imageUrl?: string;

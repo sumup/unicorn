@@ -130,15 +130,12 @@ const Index = ({ merchants }: IndexProps) => {
               <div css={spacing('kilo')}>
                 <Link href={`/business/${id}`} passHref>
                   <Anchor
-                    css={css`
+                    css={(theme: Theme) => css`
                       text-decoration: none;
+                      margin-bottom: ${theme.spacings.kilo};
                     `}
                   >
-                    <Heading
-                      size="mega"
-                      noMargin
-                      css={spacing({ bottom: 'kilo' })}
-                    >
+                    <Heading size="mega" noMargin>
                       {merchant.name}
                     </Heading>
                   </Anchor>

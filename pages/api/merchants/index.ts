@@ -32,8 +32,6 @@ async function getMerchants(): Promise<{
   }
 }
 
-// type CreateMerchantRequest = Omit<NextApiRequest, 'body'> & { body: Merchant };
-
 async function createMerchant(
   req: NextApiRequest,
 ): Promise<{ status: number; message: string }> {
