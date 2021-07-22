@@ -5,9 +5,8 @@ import { BaseStyles } from '@sumup/circuit-ui';
 import { ThemeProvider } from 'emotion-theming';
 import { light } from '@sumup/design-tokens';
 import type { AppProps } from 'next/app';
-
-import initAuth from '../utils/initAuth';
-import Header from '../components/Header';
+import initAuth from 'utils/initAuth';
+import Header from 'components/Header';
 
 initAuth();
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash/fp';
+
 import { AutoCompleteInput } from './AutoCompleteInput';
-import { getAddressFieldObject, search } from './geocode.service';
+import { search } from './geocode.service';
 
 const SEARCH_DELAY = 500;
 
@@ -50,7 +51,6 @@ export class GeocoderInput extends Component {
   };
 
   render() {
-    // console.log(this.props);
     const suggestions = this.state.results.map((obj) => ({
       value: obj.place_name,
       ...obj,

@@ -1,6 +1,6 @@
 import { ImageInput, Avatar } from '@sumup/circuit-ui';
 import React, { useState } from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/storage';
 
 if (!firebase.apps.length) {
@@ -9,6 +9,7 @@ if (!firebase.apps.length) {
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
     databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE,
   });
 }
 

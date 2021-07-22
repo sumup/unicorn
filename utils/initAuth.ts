@@ -2,17 +2,7 @@ import { init } from 'next-firebase-auth';
 
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000;
 
-const initAuth = () => {
-  if (
-    !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
-    !process.env.FIREBASE_CLIENT_EMAIL ||
-    !process.env.FIREBASE_PRIVATE_KEY ||
-    !process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL ||
-    !process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY
-  ) {
-    console.warn('Warning: missing environment variables');
-  }
-
+const initAuth = (): void => {
   init({
     debug: false,
     authPageURL: '/login',
@@ -36,6 +26,7 @@ const initAuth = () => {
       authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
       databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE,
     },
     cookies: {
       name: 'unicorn',

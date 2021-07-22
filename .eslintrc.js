@@ -13,8 +13,8 @@ module.exports = require('@sumup/foundry/eslint')(
       '@typescript-eslint/restrict-template-expressions': 'off',
       'react/prop-types': 'off',
       'no-unused-vars': 'off',
-      'jsx-a11y/anchor-is-valid': 'off',
       'react/react-in-jsx-scope': 'off',
+      'jsx-a11y/anchor-is-valid': 'off',
     },
   },
 );

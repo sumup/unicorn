@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 
 export const Container = styled.div(
   () => css`
@@ -7,7 +7,7 @@ export const Container = styled.div(
     justify-content: center;
     flex-direction: column;
     align-items: center;
-  `
+  `,
 );
 
 export const MerchantDetailsWrapper = styled.div(
@@ -17,7 +17,7 @@ export const MerchantDetailsWrapper = styled.div(
     ${theme.mq.untilMega} {
       width: 100%;
     }
-  `
+  `,
 );
 
 export const ImagesWrapper = styled.div(
@@ -27,7 +27,7 @@ export const ImagesWrapper = styled.div(
     ${theme.mq.untilMega} {
       width: 100%;
     }
-  `
+  `,
 );
 
 export const Form = styled.form(
@@ -37,5 +37,5 @@ export const Form = styled.form(
     ${theme.mq.untilMega} {
       flex-direction: column;
     }
-  `
+  `,
 );

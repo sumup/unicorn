@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import Downshift from "downshift";
-import { isString, isEmpty } from "lodash/fp";
-import { SearchInput, Card, Text } from "@sumup/circuit-ui";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import Downshift from 'downshift';
+import { isString, isEmpty } from 'lodash/fp';
+import { SearchInput, Card, Text } from '@sumup/circuit-ui';
 
-const autoCompleteWrapperStyles = ({ theme }) => css`
-  margin-bottom: ${theme.spacings.mega};
-  label: input__container;
-  position: relative;
-  min-width: 150px;
-  label > &,
-  label + & {
-    margin-top: ${theme.spacings.bit};
-  }
-`;
-
-const AutoCompleteWrapper = styled("div")(autoCompleteWrapperStyles);
+const AutoCompleteWrapper = styled.div(
+  ({ theme }) => css`
+    margin-bottom: ${theme.spacings.mega};
+    label: input__container;
+    position: relative;
+    min-width: 150px;
+    label > &,
+    label + & {
+      margin-top: ${theme.spacings.bit};
+    }
+  `,
+);
 
 const optionsStyles = ({ theme }) => css`
   label: input__options;
@@ -61,11 +61,11 @@ export class AutoCompleteInput extends Component {
   };
 
   formatSearchInputValue = (v) => {
-    if (v && v != null && typeof v === "object") {
+    if (v && v != null && typeof v === 'object') {
       return v?.place_name;
     }
 
-    return v || "";
+    return v || '';
   };
 
   render() {
@@ -92,7 +92,7 @@ export class AutoCompleteInput extends Component {
           isOpen,
           highlightedIndex,
         }) => (
-          <AutoCompleteWrapper {...getRootProps({ refKey: "ref" })}>
+          <AutoCompleteWrapper {...getRootProps({ refKey: 'ref' })}>
             <SearchInput
               {...getInputProps({
                 ...inputProps,
@@ -101,7 +101,7 @@ export class AutoCompleteInput extends Component {
               noMargin
             />
             {isOpen && !isEmpty(options) && (
-              <Options spacing={"mega"}>
+              <Options spacing={'mega'}>
                 {options.map((option, index) => {
                   const item = isString(option) ? { value: option } : option;
                   const { value, children = value, ...rest } = item;

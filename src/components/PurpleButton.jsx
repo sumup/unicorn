@@ -1,8 +1,8 @@
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import { LoadingButton, LoadingButtonProps } from "@sumup/circuit-ui";
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import { LoadingButton } from '@sumup/circuit-ui';
 
-const StyledLoadingButton = styled(LoadingButton)(
+export const PurpleButton = styled(LoadingButton)(
   () => css`
     background-color: #a22bda;
     border-color: #a22bda;
@@ -16,13 +16,5 @@ const StyledLoadingButton = styled(LoadingButton)(
       border-color: #a22bda;
       color: #fff;
     }
-  `
+  `,
 );
-
-/**
- *
- * @param {LoadingButtonProps} props
- */
-export const PurpleButton = (props) => {
-  return <StyledLoadingButton {...props}></StyledLoadingButton>;
-};
