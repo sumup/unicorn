@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { withAuthUser, withAuthUserTokenSSR } from 'next-firebase-auth';
+import { withAuthUser } from 'next-firebase-auth';
 import { BaseStyles } from '@sumup/circuit-ui';
 import { ThemeProvider } from 'emotion-theming';
 import { light } from '@sumup/design-tokens';
@@ -27,4 +27,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   );
 }
 
-export default withAuthUser()(MyApp);
+export default withAuthUser<AppProps>()(MyApp);
