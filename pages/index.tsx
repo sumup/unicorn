@@ -7,7 +7,6 @@ import {
   Text,
   spacing,
   Button,
-  IconButton,
   Anchor,
 } from '@sumup/circuit-ui';
 import { css } from '@emotion/core';
@@ -18,7 +17,8 @@ import {
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
-import { Facebook, Instagram, Link as LinkIcon } from '@sumup/icons';
+import { ExternalLinks } from '../src/components/ExternalLinks';
+
 import getAbsoluteURL from 'utils/getAbsoluteURL';
 import { Merchant } from 'utils/types';
 import styled from 'utils/styled';
@@ -108,6 +108,7 @@ const Index = ({ merchants }: IndexProps) => {
                 css={(theme: Theme) => css`
                   display: flex;
                   gap: ${theme.spacings.byte};
+                  justify-content: space-between;
                 `}
               >
                 <Button
@@ -127,37 +128,12 @@ const Index = ({ merchants }: IndexProps) => {
                     👏
                   </span>
                 </Button>
-                {merchant.links?.website && (
-                  <IconButton
-                    size="kilo"
-                    label="Website"
-                    href={merchant.links.website}
-                  >
-                    <LinkIcon
-                      css={(theme: Theme) => css`
-                        margin: 0 ${theme.spacings.bit}; // the Link icon only comes in 16px so we adapt its padding
-                      `}
-                    />
-                  </IconButton>
-                )}
-                {merchant.links?.instagram && (
-                  <IconButton
-                    size="kilo"
-                    label="Instagram"
-                    href={merchant.links.instagram}
-                  >
-                    <Instagram />
-                  </IconButton>
-                )}
-                {merchant.links?.facebook && (
-                  <IconButton
-                    size="kilo"
-                    label="Facebook"
-                    href={merchant.links.facebook}
-                  >
-                    <Facebook />
-                  </IconButton>
-                )}
+                <ExternalLinks
+                  facebook={merchant.links?.facebook}
+                  instagram={merchant.links?.instagram}
+                  phone={merchant?.phone}
+                  website={merchant.links?.website}
+                />
               </div>
             </div>
           </StyledCard>

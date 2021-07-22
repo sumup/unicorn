@@ -41,23 +41,6 @@ export const ExternalLinks = ({ website, facebook, instagram, phone }) => (
       justify-content: flex-end;
     `}
   >
-    {/* <Button
-      css={(theme) => css`
-        padding: ${theme.spacings.byte};
-      `}
-    >
-      <span
-        role="img"
-        aria-label="Clap"
-        css={(theme) => css`
-          display: block;
-          height: ${theme.iconSizes.mega};
-          width: ${theme.iconSizes.mega};
-        `}
-      >
-        👏
-      </span>
-    </Button> */}
     <span>
       {website && (
         <StyledAnchorForLink
