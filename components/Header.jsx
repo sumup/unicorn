@@ -1,11 +1,12 @@
-import React from "react";
-import Link from "next/link";
-import { useAuthUser } from "next-firebase-auth";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import { StoreFilled } from "@sumup/icons";
-import { Avatar } from "@sumup/circuit-ui";
-import { RainbowButton } from "../src/components/RainbowButton";
+import React from 'react';
+import Link from 'next/link';
+import { Avatar } from '@sumup/circuit-ui';
+import { useAuthUser } from 'next-firebase-auth';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import { StoreFilled } from '@sumup/icons';
+
+import { RainbowButton } from '../src/components/RainbowButton';
 
 const HeaderContainer = styled.div(
   ({ theme }) => css`
@@ -13,7 +14,7 @@ const HeaderContainer = styled.div(
     justify-content: flex-end;
     align-items: center;
     padding: ${theme.spacings.mega};
-  `
+  `,
 );
 
 const UnicornStyle = styled.div(
@@ -23,7 +24,7 @@ const UnicornStyle = styled.div(
     font-size: ${theme.typography.headings.tera.fontSize};
     margin-left: 0;
     margin-right: auto;
-  `
+  `,
 );
 
 const Rainbow = styled.hr(
@@ -48,7 +49,7 @@ const Rainbow = styled.hr(
     margin: 0;
     padding: 0;
     border: none;
-  `
+  `,
 );
 
 const RecommendButton = styled(RainbowButton)(
@@ -56,17 +57,13 @@ const RecommendButton = styled(RainbowButton)(
     ${theme.mq.untilMega} {
       display: none;
     }
-  `
+  `,
 );
 
-const unicorn = "🦄 Unicorn";
+const unicorn = '🦄 Unicorn';
 
 const Header = () => {
-  const { email, photoURL, clientInitialized } = useAuthUser();
-  // TODO: improve/refactor this
-  if (!clientInitialized) {
-    return <div>Loading...</div>;
-  }
+  const { email, photoURL } = useAuthUser();
 
   return (
     <>
@@ -77,17 +74,14 @@ const Header = () => {
             <Link href="/recommend">
               <a>
                 <RecommendButton type="button">
-                  <span>
-                    <StoreFilled />
-                    &nbsp; Recommend a business
-                  </span>
+                  <StoreFilled />
+                  &nbsp; Recommend a business
                 </RecommendButton>
               </a>
             </Link>
             &nbsp;
-            {/* <Image src="/avatar.svg" alt="avatar" width="50" height="50" /> */}
             <Avatar
-              src={photoURL || "/avatar.svg"}
+              src={photoURL || '/avatar.svg'}
               variant="identity"
               size="giga"
               referrerPolicy="no-referrer"

@@ -8,6 +8,7 @@ export type NextApiRequest = IncomingMessage & {
 };
 
 export type Merchant = {
+  id?: string;
   address: string;
   category: string;
   description: string;

@@ -21,6 +21,7 @@ import { Facebook, Instagram, Link } from '@sumup/icons';
 import Header from '../components/Header';
 import getAbsoluteURL from '../utils/getAbsoluteURL';
 import { Merchant } from '../utils/types';
+import NextLink from 'next/link';
 import styled from '../utils/styled';
 
 const Grid = styled.ul(
@@ -69,14 +70,18 @@ const Index = ({ merchants }: { merchants: Merchant[] }) => {
         <Grid>
           {merchants.map((merchant) => (
             <StyledCard as="li" key={merchant.name}>
-              <img
-                src={merchant.imageUrl}
-                alt=""
-                css={css`
-                  max-height: 200px;
-                  object-fit: cover;
-                `}
-              />
+              <NextLink href={`/business/${merchant.id}`}>
+                <a>
+                  <img
+                    src={merchant.imageUrl}
+                    alt=""
+                    css={css`
+                      max-height: 200px;
+                      object-fit: cover;
+                    `}
+                  />
+                </a>
+              </NextLink>
               <div css={spacing('kilo')}>
                 <Heading
                   as="h3"
@@ -177,7 +182,10 @@ export const getServerSideProps = withAuthUserTokenSSR({
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { data }: { data: { [key: number]: Merchant } } = await response.json();
-  const merchants = Object.values(data);
+  const merchants = Object.keys(data).map(
+    (key: string) => ({ id: key, ...data[key] } as Merchant),
+  );
+
   return {
     props: {
       merchants,
