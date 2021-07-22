@@ -13,6 +13,7 @@ export type Merchant = {
   description: string;
   imageUrl?: string;
   name: string;
+  phone?: string;
   links?: {
     website?: string;
     instagram?: string;
