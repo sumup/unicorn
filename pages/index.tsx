@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import {
   Heading,
   Card,
@@ -7,6 +8,7 @@ import {
   spacing,
   Button,
   IconButton,
+  Anchor,
 } from '@sumup/circuit-ui';
 import { css } from '@emotion/core';
 import {
@@ -16,7 +18,7 @@ import {
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
-import { Facebook, Instagram, Link } from '@sumup/icons';
+import { Facebook, Instagram, Link as LinkIcon } from '@sumup/icons';
 import getAbsoluteURL from 'utils/getAbsoluteURL';
 import { Merchant } from 'utils/types';
 import styled from 'utils/styled';
@@ -44,7 +46,9 @@ const StyledCard = styled(Card)`
   overflow: hidden;
 `;
 
-const Index = ({ merchants }: { merchants: Merchant[] }) => {
+type IndexProps = { merchants: { [key: number]: Merchant } };
+
+const Index = ({ merchants }: IndexProps) => {
   const AuthUser = useAuthUser();
   return (
     <Wrapper>
@@ -63,8 +67,8 @@ const Index = ({ merchants }: { merchants: Merchant[] }) => {
         Explore, add, share, and visit your favorite merchants
       </SubHeading>
       <Grid>
-        {merchants.map((merchant) => (
-          <StyledCard as="li" key={merchant.name}>
+        {Object.entries(merchants).map(([id, merchant]) => (
+          <StyledCard as="li" key={id}>
             <img
               src={merchant.imageUrl}
               alt=""
@@ -74,14 +78,21 @@ const Index = ({ merchants }: { merchants: Merchant[] }) => {
               `}
             />
             <div css={spacing('kilo')}>
-              <Heading
-                as="h3"
-                size="mega"
-                noMargin
-                css={spacing({ bottom: 'kilo' })}
-              >
-                {merchant.name}
-              </Heading>
+              <Link href={`/business/${id}`} passHref>
+                <Anchor
+                  css={css`
+                    text-decoration: none;
+                  `}
+                >
+                  <Heading
+                    size="mega"
+                    noMargin
+                    css={spacing({ bottom: 'kilo' })}
+                  >
+                    {merchant.name}
+                  </Heading>
+                </Anchor>
+              </Link>
               <Text
                 noMargin
                 css={(theme: Theme) =>
@@ -122,7 +133,7 @@ const Index = ({ merchants }: { merchants: Merchant[] }) => {
                     label="Website"
                     href={merchant.links.website}
                   >
-                    <Link
+                    <LinkIcon
                       css={(theme: Theme) => css`
                         margin: 0 ${theme.spacings.bit}; // the Link icon only comes in 16px so we adapt its padding
                       `}
@@ -171,11 +182,7 @@ export const getServerSideProps = withAuthUserTokenSSR({
     throw new Error(`Data fetching failed with status ${response.status}`);
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { data }: { data: { [key: number]: Merchant } } = await response.json();
-  const merchants = Object.keys(data).map(
-    (key: string) => ({ id: key, ...data[key] } as Merchant),
-  );
-
+  const { data: merchants }: { data: IndexProps } = await response.json();
   return {
     props: {
       merchants,
@@ -183,6 +190,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<{ merchants: Merchant[] }>({
+export default withAuthUser<IndexProps>({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(Index);
