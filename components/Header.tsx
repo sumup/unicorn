@@ -22,7 +22,7 @@ const UnicornStyle = styled.a(
     text-decoration: none;
     color: #a22bda;
     font-weight: ${theme.fontWeight.bold};
-    font-size: ${theme.typography.headings.tera.fontSize};
+    font-size: ${theme.typography.headline.one.fontSize};
     margin-left: 0;
     margin-right: auto;
   `,
@@ -91,6 +91,7 @@ const Header = () => {
                   variant="identity"
                   size="giga"
                   alt=""
+                  // @ts-expect-error TODO the Avatar should be an img
                   referrerPolicy="no-referrer"
                 />
               </>

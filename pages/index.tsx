@@ -17,11 +17,11 @@ import {
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
-import { ExternalLinks } from '../src/components/ExternalLinks';
-
 import getAbsoluteURL from 'utils/getAbsoluteURL';
 import { Merchant } from 'utils/types';
 import styled from 'utils/styled';
+
+import { ExternalLinks } from '../src/components/ExternalLinks';
 
 const Grid = styled.ul(
   ({ theme }) => css`
@@ -56,12 +56,14 @@ const Index = ({ merchants }: IndexProps) => {
         {AuthUser.displayName}, welcome to the SumUp Unicorn universe
       </Headline>
       <SubHeadline
+        as="h2"
         noMargin
         css={(theme: Theme) =>
           css`
             color: ${theme.colors.n500};
           `
-        }>
+        }
+      >
         Explore, add, share, and visit your favorite merchants
       </SubHeadline>
       <Grid>
@@ -83,6 +85,7 @@ const Index = ({ merchants }: IndexProps) => {
                   `}
                 >
                   <Headline
+                    as="h3"
                     size="four"
                     noMargin
                     css={spacing({ bottom: 'kilo' })}
