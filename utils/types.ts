@@ -20,3 +20,9 @@ export type Merchant = {
     facebook?: string;
   };
 };
+
+export type Clap = {
+  userId: string;
+  merchantId: string;
+  type: 'clap';
+};

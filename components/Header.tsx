@@ -91,6 +91,7 @@ const Header = () => {
                   variant="identity"
                   size="giga"
                   alt=""
+                  // @ts-expect-error Need to fix the Avatar component to support this
                   referrerPolicy="no-referrer"
                 />
               </>

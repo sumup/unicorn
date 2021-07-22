@@ -20,7 +20,7 @@ import {
 } from 'next-firebase-auth';
 import { Theme } from '@sumup/design-tokens';
 import getAbsoluteURL from 'utils/getAbsoluteURL';
-import { Merchant } from 'utils/types';
+import { Merchant, Clap } from 'utils/types';
 import styled from 'utils/styled';
 
 import { ExternalLinks } from '../src/components/ExternalLinks';
@@ -60,11 +60,11 @@ const ClapButton = styled(Button)(
   `,
 );
 
-type IndexProps = { merchants: { [key: number]: Merchant } };
+type IndexProps = { merchants: { [key: string]: Merchant } };
 
 const Index = ({ merchants }: IndexProps) => {
-  const [claps, setClaps] = useState({});
-  const [isFiring, setFiring] = useState(false);
+  const [claps, setClaps] = useState<{ [key: string]: Clap[] }>({});
+  const [isFiring, setFiring] = useState<boolean>(false);
   const AuthUser = useAuthUser();
   const getClaps = async () => {
     const token = await AuthUser.getIdToken();
@@ -72,13 +72,17 @@ const Index = ({ merchants }: IndexProps) => {
       method: 'GET',
       headers: { Authorization: token || '' },
     });
-    const { data } = await res.json();
-    const clapsByMerchant = groupBy(Object.values(data), 'merchantId');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { data }: { data: { [key: string]: Clap } } = await res.json();
+    const clapsByMerchant: { [key: string]: Clap[] } = groupBy(
+      Object.values(data),
+      'merchantId',
+    );
     setClaps(clapsByMerchant);
   };
 
   useEffect(() => {
-    getClaps();
+    getClaps().catch((e) => console.error(e));
   }, []);
 
   // useEffect(() => {
@@ -108,8 +112,9 @@ const Index = ({ merchants }: IndexProps) => {
       </SubHeading>
       <Grid>
         {Object.entries(merchants).map(([id, merchant]) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const numberOfClaps = claps[id]?.length;
-          const hasClapped = claps[id]?.find(
+          const hasClapped = !!claps[id]?.find(
             (clap) => clap.userId === AuthUser.id,
           );
           return (
