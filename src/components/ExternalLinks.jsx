@@ -55,7 +55,7 @@ export const ExternalLinks = ({ website, facebook, instagram, phone }) => (
 
       {instagram && (
         <StyledAnchor
-          size="kilo"
+          size="two"
           label="Instagram"
           href={instagram}
           target="_blank"
@@ -65,7 +65,7 @@ export const ExternalLinks = ({ website, facebook, instagram, phone }) => (
       )}
       {facebook && (
         <StyledAnchor
-          size="kilo"
+          size="two"
           label="Facebook"
           href={facebook}
           target="_blank"
@@ -75,7 +75,7 @@ export const ExternalLinks = ({ website, facebook, instagram, phone }) => (
       )}
       {phone && (
         <StyledAnchor
-          size="kilo"
+          size="two"
           label="Phone number"
           href={`tel:${phone.replace(/ /g, '')}`}
         >

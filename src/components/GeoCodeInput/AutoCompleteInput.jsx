@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import Downshift from 'downshift';
 import { isString, isEmpty } from 'lodash/fp';
-import { SearchInput, Card, Text } from '@sumup/circuit-ui';
+import { SearchInput, Card, Body } from '@sumup/circuit-ui';
 
 const AutoCompleteWrapper = styled.div(
   ({ theme }) => css`
@@ -49,7 +49,7 @@ const optionSelectedStyles = ({ selected, theme }) =>
     background-color: ${theme.colors.n100};
   `;
 
-const Option = styled(Text)(optionBaseStyles, optionSelectedStyles);
+const Option = styled(Body)(optionBaseStyles, optionSelectedStyles);
 
 export class AutoCompleteInput extends Component {
   handleDownShiftRef = (ref) => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Heading,
+  Headline,
   Card,
-  SubHeading,
-  Text,
+  SubHeadline,
+  Body,
   spacing,
   Button,
   Anchor,
@@ -52,20 +52,18 @@ const Index = ({ merchants }: IndexProps) => {
   const AuthUser = useAuthUser();
   return (
     <Wrapper>
-      <Heading noMargin as="h1" size="giga" css={spacing({ bottom: 'kilo' })}>
+      <Headline noMargin as="h1" size="three" css={spacing({ bottom: 'kilo' })}>
         {AuthUser.displayName}, welcome to the SumUp Unicorn universe
-      </Heading>
-      <SubHeading
+      </Headline>
+      <SubHeadline
         noMargin
-        size="mega"
         css={(theme: Theme) =>
           css`
             color: ${theme.colors.n500};
           `
-        }
-      >
+        }>
         Explore, add, share, and visit your favorite merchants
-      </SubHeading>
+      </SubHeadline>
       <Grid>
         {Object.entries(merchants).map(([id, merchant]) => (
           <StyledCard as="li" key={id}>
@@ -84,16 +82,16 @@ const Index = ({ merchants }: IndexProps) => {
                     text-decoration: none;
                   `}
                 >
-                  <Heading
-                    size="mega"
+                  <Headline
+                    size="four"
                     noMargin
                     css={spacing({ bottom: 'kilo' })}
                   >
                     {merchant.name}
-                  </Heading>
+                  </Headline>
                 </Anchor>
               </Link>
-              <Text
+              <Body
                 noMargin
                 css={(theme: Theme) =>
                   css`
@@ -103,7 +101,7 @@ const Index = ({ merchants }: IndexProps) => {
                 }
               >
                 {merchant.description}
-              </Text>
+              </Body>
               <div
                 css={(theme: Theme) => css`
                   display: flex;

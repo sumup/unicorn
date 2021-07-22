@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Select, Heading, TextArea, spacing } from '@sumup/circuit-ui';
+import { Input, Select, Headline, TextArea, spacing } from '@sumup/circuit-ui';
 import { StoreFilled } from '@sumup/icons';
 
 import { PurpleButton } from '../../components/PurpleButton';
@@ -52,9 +52,9 @@ export const RecommendForm = ({ isLoading = false, handleFormSubmit }) => {
 
   return (
     <Container>
-      <Heading noMargin css={spacing({ bottom: 'tera' })} size="giga">
+      <Headline noMargin css={spacing({ bottom: 'tera' })} size="three">
         Add SumUp Merchant
-      </Heading>
+      </Headline>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ImagesWrapper>
           <Controller

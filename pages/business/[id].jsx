@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Card,
-  Heading,
-  SubHeading,
+  Headline,
+  SubHeadline,
   spacing,
   Button,
   Image,
@@ -43,7 +43,7 @@ const StyledCard = styled(Card)(
   `,
 );
 
-const StyledSubheading = styled(SubHeading)(
+const StyledSubheading = styled(SubHeadline)(
   () => css`
     text-transform: none;
     font-size: 20px;
@@ -94,13 +94,13 @@ const BusinessPage = ({ merchant }) => (
       <StyledCard>
         <CardIconSvg />
 
-        <Heading
-          size="tera"
+        <Headline
+          size="two"
           noMargin
           css={spacing({ top: 'giga', bottom: 'bit' })}
         >
           {merchant.name}
-        </Heading>
+        </Headline>
         <StyledSubheading>{merchant.description}</StyledSubheading>
         <dl>
           <StyledDt>Location</StyledDt>
@@ -119,11 +119,11 @@ const BusinessPage = ({ merchant }) => (
       </StyledCard>
     </div>
     <div>
-      <Heading size="tera">Photos</Heading>
+      <Headline size="two">Photos</Headline>
       <StyledImage src={merchant.imageUrl} atl={merchant.name} />
-      <Heading css={{ marginTop: 48 }} size="tera">
+      <Headline css={{ marginTop: 48 }} size="two">
         Comments
-      </Heading>
+      </Headline>
     </div>
   </Wrapper>
 );
