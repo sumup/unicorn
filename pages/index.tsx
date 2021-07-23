@@ -102,100 +102,102 @@ const Index = ({ merchants }: IndexProps) => {
         Explore, add, share, and visit your favorite merchants
       </SubHeading>
       <Grid>
-        {Object.entries(merchants).map(([id, merchant]) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const numberOfClaps = claps[id]?.length;
-          const hasClapped = !!claps[id]?.find(
-            (clap) => clap.userId === AuthUser.id,
-          );
-          return (
-            <StyledCard as="li" key={id}>
-              <img
-                src={merchant.imageUrl}
-                alt=""
-                css={css`
-                  max-height: 200px;
-                  object-fit: cover;
-                `}
-              />
-              <div css={spacing('kilo')}>
-                <Link href={`/business/${id}`} passHref>
-                  <Anchor
+        {Object.entries(merchants)
+          .reverse()
+          .map(([id, merchant]) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const numberOfClaps = claps[id]?.length;
+            const hasClapped = !!claps[id]?.find(
+              (clap) => clap.userId === AuthUser.id,
+            );
+            return (
+              <StyledCard as="li" key={id}>
+                <img
+                  src={merchant.imageUrl}
+                  alt=""
+                  css={css`
+                    max-height: 200px;
+                    object-fit: cover;
+                  `}
+                />
+                <div css={spacing('kilo')}>
+                  <Link href={`/business/${id}`} passHref>
+                    <Anchor
+                      css={(theme: Theme) => css`
+                        text-decoration: none;
+                        margin-bottom: ${theme.spacings.kilo};
+                      `}
+                    >
+                      <Heading size="mega" noMargin>
+                        {merchant.name}
+                      </Heading>
+                    </Anchor>
+                  </Link>
+                  <Text
+                    noMargin
+                    css={(theme: Theme) =>
+                      css`
+                        color: ${theme.colors.n500};
+                        margin-bottom: ${theme.spacings.kilo};
+                      `
+                    }
+                  >
+                    {merchant.description}
+                  </Text>
+                  <div
                     css={(theme: Theme) => css`
-                      text-decoration: none;
-                      margin-bottom: ${theme.spacings.kilo};
+                      display: flex;
+                      gap: ${theme.spacings.byte};
+                      justify-content: space-between;
                     `}
                   >
-                    <Heading size="mega" noMargin>
-                      {merchant.name}
-                    </Heading>
-                  </Anchor>
-                </Link>
-                <Text
-                  noMargin
-                  css={(theme: Theme) =>
-                    css`
-                      color: ${theme.colors.n500};
-                      margin-bottom: ${theme.spacings.kilo};
-                    `
-                  }
-                >
-                  {merchant.description}
-                </Text>
-                <div
-                  css={(theme: Theme) => css`
-                    display: flex;
-                    gap: ${theme.spacings.byte};
-                    justify-content: space-between;
-                  `}
-                >
-                  <div>
-                    <ClapButton
-                      hasClapped={hasClapped}
-                      disabled={hasClapped}
-                      onClick={async () => {
-                        setFiring(true);
-                        const token = await AuthUser.getIdToken();
-                        await fetch(`/api/clap/${id}`, {
-                          headers: { Authorization: token || 'unauthorized' },
-                          method: 'POST',
-                        });
-                        return getClaps();
-                      }}
-                    >
-                      <span
-                        role="img"
-                        aria-label="Clap"
-                        css={(theme: Theme) => css`
-                          display: block;
-                          height: ${theme.iconSizes.mega};
-                          width: ${theme.iconSizes.mega};
-                        `}
+                    <div>
+                      <ClapButton
+                        hasClapped={hasClapped}
+                        disabled={hasClapped}
+                        onClick={async () => {
+                          setFiring(true);
+                          const token = await AuthUser.getIdToken();
+                          await fetch(`/api/clap/${id}`, {
+                            headers: { Authorization: token || 'unauthorized' },
+                            method: 'POST',
+                          });
+                          return getClaps();
+                        }}
                       >
-                        👏
-                      </span>
-                    </ClapButton>
-                    {!!numberOfClaps && (
-                      <span
-                        css={css`
-                          margin-left: 8px;
-                        `}
-                      >
-                        {numberOfClaps}
-                      </span>
-                    )}
+                        <span
+                          role="img"
+                          aria-label="Clap"
+                          css={(theme: Theme) => css`
+                            display: block;
+                            height: ${theme.iconSizes.mega};
+                            width: ${theme.iconSizes.mega};
+                          `}
+                        >
+                          👏
+                        </span>
+                      </ClapButton>
+                      {!!numberOfClaps && (
+                        <span
+                          css={css`
+                            margin-left: 8px;
+                          `}
+                        >
+                          {numberOfClaps}
+                        </span>
+                      )}
+                    </div>
+                    <ExternalLinks
+                      facebook={merchant.links?.facebook}
+                      instagram={merchant.links?.instagram}
+                      phone={merchant?.phone}
+                      website={merchant.links?.website}
+                    />
                   </div>
-                  <ExternalLinks
-                    facebook={merchant.links?.facebook}
-                    instagram={merchant.links?.instagram}
-                    phone={merchant?.phone}
-                    website={merchant.links?.website}
-                  />
                 </div>
-              </div>
-            </StyledCard>
-          );
-        })}
+              </StyledCard>
+            );
+          })}
         <Confetti
           css={css`
             position: fixed;
