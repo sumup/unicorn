@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Confetti from 'react-canvas-confetti';
-import {
-  Card,
-  Heading,
-  SubHeading,
-  spacing,
-  Button,
-  Image,
-} from '@sumup/circuit-ui';
+import { Heading, spacing, TextArea } from '@sumup/circuit-ui';
 import { css } from '@emotion/core';
 import {
   withAuthUser,
@@ -15,93 +8,75 @@ import {
   withAuthUserTokenSSR,
   useAuthUser,
 } from 'next-firebase-auth';
-import { ArrowLeft } from '@sumup/icons';
+import { ArrowLeft, PaperPlane } from '@sumup/icons';
 import Link from 'next/link';
 import { CardIconSvg } from 'src/pages/business/svg-icons';
-import styled from 'utils/styled';
 import { ExternalLinks } from 'src/components/ExternalLinks';
 import { Clap, Merchant } from 'utils/types';
 import getAbsoluteURL from 'utils/getAbsoluteURL';
 import { Theme } from '@sumup/design-tokens';
-import { groupBy } from 'lodash';
+import { groupBy, orderBy } from 'lodash';
+import { PurpleButton } from 'src/components/PurpleButton';
 
-const Wrapper = styled.div(
-  () => css`
-    max-width: 1170px;
-    margin: 0 auto;
-    display: flex;
-    position: relative;
-    padding-top: 46px;
-  `,
-);
-
-const StyledCard = styled(Card)(
-  () => css`
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    max-width: 100%;
-    width: 375px;
-    overflow: hidden;
-    margin-right: 32px;
-  `,
-);
-
-const StyledSubheading = styled(SubHeading)(
-  () => css`
-    text-transform: none;
-    font-size: 20px;
-    line-height: 24px;
-    color: #666666;
-    font-weight: normal;
-    margin-bottom: 24px;
-  `,
-);
-
-const StyledDt = styled.dt`
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #666666;
-`;
-
-const StyledDd = styled.dd`
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #333333;
-  margin-bottom: 16px;
-`;
-
-const BackButton = styled(Button)`
-  border-radius: 0;
-  border: none;
-  top: -10px;
-  position: absolute;
-`;
-
-const StyledImage = styled(Image)`
-  border-radius: 8px;
-  width: 248px;
-  height: 148px;
-  object-fit: cover;
-`;
-
-const ClapButton = styled(Button)(
-  ({ theme, hasClapped }: { theme: Theme; hasClapped?: boolean }) => css`
-    padding: ${theme.spacings.byte};
-    ${hasClapped &&
-    css`
-      border-width: ${theme.borderWidth.mega};
-      border-color: ${theme.colors.warning};
-      opacity: 1 !important;
-    `}
-  `,
-);
+import { CommentRow } from '../../src/pages/business/comment';
+import {
+  Wrapper,
+  StyledCard,
+  BackButton,
+  ClapButton,
+  StyledDd,
+  StyledDt,
+  StyledImage,
+  StyledSubheading,
+} from '../../src/pages/business/business-page.styles';
+import { firebase } from '../../src/lib/firebase';
+import 'firebase/database';
 
 const BusinessPage = ({ merchant, id }: { merchant: Merchant; id: string }) => {
   const [claps, setClaps] = useState<{ [key: string]: Clap[] }>({});
-  const [isFiring, setFiring] = useState<boolean>(false);
+  const [isFiring, setFiring] = useState(false);
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState(
+    orderBy(Object.values(merchant.comments || {}), 'dateAdded', 'desc'),
+  );
+
   const AuthUser = useAuthUser();
+
+  const handleFormSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (!comment.trim().length) {
+      return;
+    }
+
+    const commentId = new Date().getTime();
+
+    await firebase
+      .database()
+      .ref(`merchants/${id}/comments/${commentId}`)
+      .set({
+        id: commentId.toString(),
+        comment,
+        dateAdded: commentId,
+        user: {
+          id: AuthUser.id,
+          displayName: AuthUser.displayName,
+          photoUrl: AuthUser.photoURL,
+        },
+      });
+
+    setComment('');
+  };
+
+  useEffect(() => {
+    const commentsRef = firebase.database().ref(`merchants/${id}/comments`);
+
+    commentsRef.on('value', (snapshot) => {
+      const data: any[] = Object.values(snapshot.val() || {});
+      setComments(orderBy(data, 'dateAdded', 'desc'));
+    });
+
+    return () => commentsRef.off('value');
+  }, []);
 
   const getClaps = async () => {
     const token = await AuthUser.getIdToken();
@@ -202,12 +177,57 @@ const BusinessPage = ({ merchant, id }: { merchant: Merchant; id: string }) => {
           </div>
         </StyledCard>
       </div>
-      <div>
+      <div
+        css={css`
+          width: 100%;
+        `}
+      >
         <Heading size="tera">Photos</Heading>
         <StyledImage src={merchant.imageUrl || ''} alt={merchant.name} />
         <Heading css={{ marginTop: 48 }} size="tera">
           Comments
         </Heading>
+        <form
+          onSubmit={handleFormSubmit}
+          css={css`
+            position: relative;
+            margin-bottom: 24px;
+          `}
+        >
+          <TextArea
+            css={css`
+              height: 72px;
+              padding-right: 135px;
+              margin: 0;
+            `}
+            placeholder="Write something about the business"
+            value={comment}
+            onChange={(e) => {
+              setComment(e.currentTarget.value);
+            }}
+          />
+
+          <PurpleButton
+            css={css`
+              position: absolute;
+              right: 12px;
+              top: 50%;
+              transform: translateY(-50%);
+            `}
+            type="submit"
+            icon={PaperPlane}
+            loadingLabel="Loading..."
+          >
+            Send
+          </PurpleButton>
+        </form>
+        {/* COMMENTS LIST */}
+        <div>
+          {comments.map((item) => (
+            <CommentRow key={item.id} comment={item} />
+            // <div key={item.id}>{item.comment}</div>
+          ))}
+        </div>
       </div>
       <Confetti
         css={css`
