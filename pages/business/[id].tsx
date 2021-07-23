@@ -74,6 +74,8 @@ const BusinessPage = ({ merchant, id }: { merchant: Merchant; id: string }) => {
       const data: any[] = Object.values(snapshot.val() || {});
       setComments(orderBy(data, 'dateAdded', 'desc'));
     });
+
+    return () => commentsRef.off('value');
   }, []);
 
   const getClaps = async () => {
