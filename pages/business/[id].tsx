@@ -99,7 +99,6 @@ const BusinessPage = ({ merchant, id }: { merchant: Merchant; id: string }) => {
 
   const numberOfClaps = claps[id]?.length;
   const hasClapped = !!claps[id]?.find((clap) => clap.userId === AuthUser.id);
-  // const comments =
 
   return (
     <Wrapper>
