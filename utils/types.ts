@@ -7,6 +7,17 @@ export type NextApiRequest = IncomingMessage & {
   cookies: NextApiRequestCookies;
 };
 
+export type Comment = {
+  id: string;
+  dateAdded: number;
+  comment: string;
+  user: {
+    displayName: string;
+    id: string;
+    photoUrl: string;
+  };
+};
+
 export type Merchant = {
   address: {
     place_name: string;
@@ -21,6 +32,7 @@ export type Merchant = {
     instagram?: string;
     facebook?: string;
   };
+  comments?: Record<string, Comment>;
 };
 
 export type Clap = {
