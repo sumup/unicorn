@@ -85,15 +85,6 @@ const Index = ({ merchants }: IndexProps) => {
     getClaps().catch((e) => console.error(e));
   }, []);
 
-  // useEffect(() => {
-  //   if (isFiring === true) {
-  //     getClaps().then((data) => {
-  //       const clapsByMerchant = groupBy(Object.values(data), 'merchantId');
-  //       setClaps(clapsByMerchant);
-  //     });
-  //   }
-  // }, [isFiring]);
-
   return (
     <Wrapper>
       <Heading noMargin as="h1" size="giga" css={spacing({ bottom: 'kilo' })}>
@@ -158,33 +149,42 @@ const Index = ({ merchants }: IndexProps) => {
                     justify-content: space-between;
                   `}
                 >
-                  <ClapButton
-                    hasClapped={hasClapped}
-                    disabled={hasClapped}
-                    onClick={async () => {
-                      setFiring(true);
-                      const token = await AuthUser.getIdToken();
-                      await fetch(`/api/clap/${id}`, {
-                        headers: { Authorization: token || 'unauthorized' },
-                        method: 'POST',
-                      });
-                      return getClaps();
-                    }}
-                  >
-                    <span
-                      role="img"
-                      aria-label="Clap"
-                      css={(theme: Theme) => css`
-                        display: block;
-                        height: ${theme.iconSizes.mega};
-                        width: ${theme.iconSizes.mega};
-                      `}
+                  <div>
+                    <ClapButton
+                      hasClapped={hasClapped}
+                      disabled={hasClapped}
+                      onClick={async () => {
+                        setFiring(true);
+                        const token = await AuthUser.getIdToken();
+                        await fetch(`/api/clap/${id}`, {
+                          headers: { Authorization: token || 'unauthorized' },
+                          method: 'POST',
+                        });
+                        return getClaps();
+                      }}
                     >
-                      👏
-                    </span>
-                  </ClapButton>
-                  {numberOfClaps}
-
+                      <span
+                        role="img"
+                        aria-label="Clap"
+                        css={(theme: Theme) => css`
+                          display: block;
+                          height: ${theme.iconSizes.mega};
+                          width: ${theme.iconSizes.mega};
+                        `}
+                      >
+                        👏
+                      </span>
+                    </ClapButton>
+                    {!!numberOfClaps && (
+                      <span
+                        css={css`
+                          margin-left: 8px;
+                        `}
+                      >
+                        {numberOfClaps}
+                      </span>
+                    )}
+                  </div>
                   <ExternalLinks
                     facebook={merchant.links?.facebook}
                     instagram={merchant.links?.instagram}
