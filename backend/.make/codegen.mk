@@ -1,0 +1,3 @@
+.PHONY: generate-go
+generate-go: ensure-mockgen ensure-enumer ## Run all go generate commands
+	@go generate -x ./...

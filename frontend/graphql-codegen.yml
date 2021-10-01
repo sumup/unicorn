@@ -1,0 +1,13 @@
+overwrite: true
+schema: "../backend/schema.graphqls"
+documents: "gql/queries/*.graphql"
+generates:
+  gql/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-urql"
+      - "urql-introspection"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

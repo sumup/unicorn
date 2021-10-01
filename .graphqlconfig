@@ -1,0 +1,12 @@
+{
+  "name": "Unicorn",
+  "schemaPath": "./backend/schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:3001/api/gql/query",
+        "introspect": false
+      }
+    }
+  }
+}

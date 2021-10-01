@@ -1,8 +1,28 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# editors
+.projectile
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.swp
+
+#binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# test binary, built with `go test -c`
+*.test
+
+# output of the go coverage tool, specifically when used with LiteIDE
+*.out
 
 # dependencies
-/node_modules
-/.pnp
+vendor/
+node_modules/
+.pnp/
 .pnp.js
 
 # testing
@@ -17,14 +37,17 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# local db
+pgdata/
+
+# logs
+*.log*
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local

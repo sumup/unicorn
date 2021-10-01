@@ -1,0 +1,20 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:13-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - target: 5432
+        published: ${DB_PORT}
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+# Can map this if you need persistent data locally
+#    volumes:
+#      - ./pgdata:/var/lib/postgresql/data

@@ -1,0 +1,30 @@
+scalar Time
+
+type Employee {
+    id: ID!
+    first_name: String!
+    last_name: String!
+    job_title: String!
+    email: String!
+    slack_id: String!
+    slack_handle: String!
+}
+
+type Query {
+    employees: [Employee!]!
+    employee(id: String!): Employee
+    employeeByEmail(email: String!): Employee
+}
+
+input CreateEmployee {
+    first_name: String!
+    last_name: String!
+    job_title: String!
+    email: String!
+    slack_id: String!
+    slack_handle: String!
+}
+
+type Mutation {
+    createEmployee(input: CreateEmployee!): Employee!
+}
